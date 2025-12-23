@@ -16,6 +16,16 @@
     "ui": "@/components/ui",
     "lib": "@/lib",
     "hooks": "@/hooks"
-  }
+  },
+  "registries": [
+    {
+      "name": "magic-ui",
+      "url": "https://magicui.design/registry"
+    },
+    {
+      "name": "aceternity",
+      "url": "https://ui.aceternity.com/registry"
+    }
+  ]
 }
 

@@ -109,6 +109,36 @@ npx shadcn@latest add card
 
 Components will be added to `src/components/ui/`.
 
+### Adding Magic UI Components
+
+Magic UI components are registered and can be added using:
+
+```bash
+npx shadcn@latest add @magic-ui/[component-name]
+```
+
+For example:
+```bash
+npx shadcn@latest add @magic-ui/bento-grid
+npx shadcn@latest add @magic-ui/marquee
+npx shadcn@latest add @magic-ui/animated-beam
+```
+
+### Adding Aceternity UI Components
+
+Aceternity UI components are registered and can be added using:
+
+```bash
+npx shadcn@latest add @aceternity/[component-name]
+```
+
+For example:
+```bash
+npx shadcn@latest add @aceternity/bento-grid
+npx shadcn@latest add @aceternity/macbook-scroll
+npx shadcn@latest add @aceternity/3d-card
+```
+
 ## Example Components
 
 The project includes example components in `src/components/examples/`:
