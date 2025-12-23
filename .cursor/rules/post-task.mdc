@@ -1,0 +1,11 @@
+---
+alwaysApply: false
+---
+
+in docs/ folder, search for current-branch-name.md.
+
+if not exist:
+create it and write a brief implementation summary in it.
+
+if exist:
+update/append the new implementation in it in a brief summary
