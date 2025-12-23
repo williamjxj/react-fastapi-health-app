@@ -31,7 +31,30 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+**Code Quality:**
+- [ ] Language-specific linting and formatting tools identified
+- [ ] Code style guide and standards documented
+- [ ] Documentation requirements defined for public APIs
+
+**Testing Standards:**
+- [ ] Testing framework and tools selected
+- [ ] Test coverage targets defined (80% unit, 60% integration minimum)
+- [ ] TDD workflow confirmed for feature development
+- [ ] Test types required identified (unit, integration, contract, performance)
+
+**User Experience Consistency:**
+- [ ] Design system or UI component library identified
+- [ ] Accessibility requirements defined (WCAG 2.1 AA minimum)
+- [ ] Responsive design breakpoints defined
+- [ ] Error message patterns established
+
+**Performance Requirements:**
+- [ ] Performance targets defined (load times, API latency, etc.)
+- [ ] Performance budgets established (bundle size, payload size, etc.)
+- [ ] Performance testing strategy defined
+- [ ] Monitoring and alerting requirements identified
+
+**Compliance Status:** [ ] All gates passed | [ ] Exceptions documented below
 
 ## Project Structure
 

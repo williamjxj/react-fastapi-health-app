@@ -105,11 +105,28 @@
 <!--
   ACTION REQUIRED: Define measurable success criteria.
   These must be technology-agnostic and measurable.
+  Must include code quality, testing, UX, and performance metrics per constitution.
 -->
 
 ### Measurable Outcomes
 
-- **SC-001**: [Measurable metric, e.g., "Users can complete account creation in under 2 minutes"]
-- **SC-002**: [Measurable metric, e.g., "System handles 1000 concurrent users without degradation"]
-- **SC-003**: [User satisfaction metric, e.g., "90% of users successfully complete primary task on first attempt"]
-- **SC-004**: [Business metric, e.g., "Reduce support tickets related to [X] by 50%"]
+**User Experience:**
+- **SC-001**: [UX metric, e.g., "Users can complete account creation in under 2 minutes"]
+- **SC-002**: [UX metric, e.g., "90% of users successfully complete primary task on first attempt"]
+- **SC-003**: [Accessibility metric, e.g., "All interactive elements pass WCAG 2.1 AA compliance"]
+
+**Performance:**
+- **SC-004**: [Performance metric, e.g., "Page load time < 2s, Time to Interactive < 3s"]
+- **SC-005**: [API metric, e.g., "API response time p95 < 200ms for standard operations"]
+- **SC-006**: [Resource metric, e.g., "Bundle size < [X]KB, no memory leaks detected"]
+
+**Testing:**
+- **SC-007**: [Test coverage metric, e.g., "Unit test coverage ≥ 80%, integration coverage ≥ 60%"]
+- **SC-008**: [Test quality metric, e.g., "All tests pass, zero flaky tests, all edge cases covered"]
+
+**Code Quality:**
+- **SC-009**: [Quality metric, e.g., "Zero linting errors, all public APIs documented"]
+- **SC-010**: [Maintainability metric, e.g., "Code complexity within acceptable thresholds"]
+
+**Business:**
+- **SC-011**: [Business metric, e.g., "Reduce support tickets related to [X] by 50%"]

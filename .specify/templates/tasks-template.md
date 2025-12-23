@@ -8,7 +8,7 @@ description: "Task list template for feature implementation"
 **Input**: Design documents from `/specs/[###-feature-name]/`
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
-**Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the feature specification.
+**Tests**: Per constitution, testing is MANDATORY. All features MUST include comprehensive test suites (unit, integration, contract, and performance tests as applicable). TDD workflow MUST be followed: write tests first, ensure they fail, then implement.
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
@@ -79,12 +79,14 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 1 (OPTIONAL - only if tests requested) ⚠️
+### Tests for User Story 1 (MANDATORY per constitution) ⚠️
 
-> **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
+> **NOTE: Write these tests FIRST, ensure they FAIL before implementation. TDD is NON-NEGOTIABLE.**
 
-- [ ] T010 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T011 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py
+- [ ] T010 [P] [US1] Unit tests for [component/logic] in tests/unit/test_[name].py (target: 80% coverage)
+- [ ] T011 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
+- [ ] T012 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py (target: 60% coverage)
+- [ ] T013 [P] [US1] Performance test for [critical path] in tests/performance/test_[name].py (if applicable)
 
 ### Implementation for User Story 1
 
@@ -105,10 +107,14 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 2 (OPTIONAL - only if tests requested) ⚠️
+### Tests for User Story 2 (MANDATORY per constitution) ⚠️
 
-- [ ] T018 [P] [US2] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T019 [P] [US2] Integration test for [user journey] in tests/integration/test_[name].py
+> **NOTE: Write these tests FIRST, ensure they FAIL before implementation. TDD is NON-NEGOTIABLE.**
+
+- [ ] T018 [P] [US2] Unit tests for [component/logic] in tests/unit/test_[name].py (target: 80% coverage)
+- [ ] T019 [P] [US2] Contract test for [endpoint] in tests/contract/test_[name].py
+- [ ] T020 [P] [US2] Integration test for [user journey] in tests/integration/test_[name].py (target: 60% coverage)
+- [ ] T021 [P] [US2] Performance test for [critical path] in tests/performance/test_[name].py (if applicable)
 
 ### Implementation for User Story 2
 
@@ -127,10 +133,14 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 3 (OPTIONAL - only if tests requested) ⚠️
+### Tests for User Story 3 (MANDATORY per constitution) ⚠️
 
-- [ ] T024 [P] [US3] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T025 [P] [US3] Integration test for [user journey] in tests/integration/test_[name].py
+> **NOTE: Write these tests FIRST, ensure they FAIL before implementation. TDD is NON-NEGOTIABLE.**
+
+- [ ] T024 [P] [US3] Unit tests for [component/logic] in tests/unit/test_[name].py (target: 80% coverage)
+- [ ] T025 [P] [US3] Contract test for [endpoint] in tests/contract/test_[name].py
+- [ ] T026 [P] [US3] Integration test for [user journey] in tests/integration/test_[name].py (target: 60% coverage)
+- [ ] T027 [P] [US3] Performance test for [critical path] in tests/performance/test_[name].py (if applicable)
 
 ### Implementation for User Story 3
 
@@ -148,14 +158,32 @@ Examples of foundational tasks (adjust based on your project):
 
 ## Phase N: Polish & Cross-Cutting Concerns
 
-**Purpose**: Improvements that affect multiple user stories
+**Purpose**: Improvements that affect multiple user stories and ensure constitution compliance
 
-- [ ] TXXX [P] Documentation updates in docs/
-- [ ] TXXX Code cleanup and refactoring
+**Code Quality:**
+- [ ] TXXX [P] Code quality audit: run linters, fix all violations
+- [ ] TXXX [P] Documentation updates: ensure all public APIs documented
+- [ ] TXXX Code cleanup and refactoring to reduce complexity
+- [ ] TXXX [P] Security hardening and vulnerability scanning
+
+**Testing:**
+- [ ] TXXX [P] Verify test coverage meets thresholds (80% unit, 60% integration)
+- [ ] TXXX [P] Run full test suite and fix any flaky tests
+- [ ] TXXX [P] Performance test suite execution and validation
+
+**User Experience:**
+- [ ] TXXX [P] Accessibility audit (WCAG 2.1 AA compliance)
+- [ ] TXXX [P] UX consistency review across all features
+- [ ] TXXX [P] Responsive design validation across breakpoints
+
+**Performance:**
 - [ ] TXXX Performance optimization across all stories
-- [ ] TXXX [P] Additional unit tests (if requested) in tests/unit/
-- [ ] TXXX Security hardening
+- [ ] TXXX Performance budget validation (bundle size, payload size)
+- [ ] TXXX Performance monitoring setup and validation
+
+**Validation:**
 - [ ] TXXX Run quickstart.md validation
+- [ ] TXXX Constitution compliance verification
 
 ---
 
