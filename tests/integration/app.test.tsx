@@ -10,14 +10,13 @@ describe('App Integration', () => {
 
   it('should have Tailwind CSS classes applied', () => {
     const { container } = render(<App />)
-    const element = container.querySelector('div')
-    expect(element).toHaveClass('min-h-screen')
+    const main = container.querySelector('main')
+    expect(main).toHaveClass('min-h-screen')
   })
 
-  it('should render example components', () => {
-    const { container } = render(<App />)
-    // Verify the component structure exists
-    expect(container.querySelector('section')).toBeInTheDocument()
+  it('should render Patient Management Page', () => {
+    render(<App />)
+    expect(screen.getByText(/patient management system/i)).toBeInTheDocument()
   })
 })
 

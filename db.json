@@ -1,0 +1,31 @@
+{
+  "patients": [
+    {
+      "id": "1",
+      "patientID": "P001",
+      "name": "John Doe",
+      "age": 45,
+      "gender": "Male",
+      "medicalCondition": "Hypertension",
+      "lastVisit": "2024-01-15"
+    },
+    {
+      "id": "2",
+      "patientID": "P002",
+      "name": "Jane Smith",
+      "age": 38,
+      "gender": "Female",
+      "medicalCondition": "Type 2 Diabetes",
+      "lastVisit": "2024-02-10"
+    },
+    {
+      "id": "3e3a",
+      "patientID": "p003",
+      "name": "runpod-worker-comfy",
+      "age": 60,
+      "gender": "Male",
+      "medicalCondition": "fevor",
+      "lastVisit": "2025-12-02"
+    }
+  ]
+}
