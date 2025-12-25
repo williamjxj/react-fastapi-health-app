@@ -40,7 +40,7 @@ describe('PatientService', () => {
 
       const result = await getPatients()
 
-      expect(global.fetch).toHaveBeenCalledWith('http://localhost:3001/patients')
+      expect(global.fetch).toHaveBeenCalledWith('http://localhost:8000/patients')
       expect(result).toEqual(mockPatients)
       expect(result).toHaveLength(2)
     })
@@ -87,7 +87,7 @@ describe('PatientService', () => {
 
       const result = await createPatient(newPatient)
 
-      expect(global.fetch).toHaveBeenCalledWith('http://localhost:3001/patients', {
+      expect(global.fetch).toHaveBeenCalledWith('http://localhost:8000/patients', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

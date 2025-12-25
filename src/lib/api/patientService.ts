@@ -1,6 +1,6 @@
 import type { Patient, PatientInput } from '@/lib/models/patient'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3001'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000'
 const PATIENTS_ENDPOINT = `${API_BASE_URL}/patients`
 
 async function handleResponse<T>(res: Response): Promise<T> {

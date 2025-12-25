@@ -89,3 +89,29 @@ storybook-static
 tmp/
 temp/
 
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+backend/venv/
+backend/.venv/
+venv/
+.venv/
+ENV/
+env/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.coverage
+htmlcov/
+*.prof
+*.log
+backend/.env
+backend/.env.local
+
+# Alembic
+alembic/versions/*.pyc
+
