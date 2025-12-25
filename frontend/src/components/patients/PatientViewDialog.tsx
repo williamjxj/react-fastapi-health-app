@@ -9,7 +9,11 @@ interface PatientViewDialogProps {
   onOpenChange: (open: boolean) => void
 }
 
-export function PatientViewDialog({ patient, open, onOpenChange }: PatientViewDialogProps) {
+export function PatientViewDialog({
+  patient,
+  open,
+  onOpenChange,
+}: PatientViewDialogProps) {
   if (!open) return null
 
   return (
@@ -22,59 +26,74 @@ export function PatientViewDialog({ patient, open, onOpenChange }: PatientViewDi
         onClick={(e) => e.stopPropagation()}
       >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-          <CardTitle className="text-2xl font-semibold text-foreground">Patient Details</CardTitle>
+          <CardTitle className="text-2xl font-semibold text-foreground">
+            Patient Details
+          </CardTitle>
           <Button
             variant="ghost"
             size="sm"
             onClick={() => onOpenChange(false)}
             className="h-8 w-8 p-0"
+            aria-label="Close dialog"
           >
-            <X className="h-4 w-4" />
+            <X className="h-4 w-4" aria-hidden="true" />
           </Button>
         </CardHeader>
         <CardContent className="space-y-4">
           <dl className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1">
               <dt className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                <Hash className="h-4 w-4" />
+                <Hash className="h-4 w-4" aria-hidden="true" />
                 Patient ID
               </dt>
-              <dd className="text-base font-semibold text-foreground">{patient.patientID}</dd>
+              <dd className="text-base font-semibold text-foreground">
+                {patient.patientID}
+              </dd>
             </div>
             <div className="space-y-1">
               <dt className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                <User className="h-4 w-4" />
+                <User className="h-4 w-4" aria-hidden="true" />
                 Name
               </dt>
-              <dd className="text-base font-semibold text-foreground">{patient.name}</dd>
+              <dd className="text-base font-semibold text-foreground">
+                {patient.name}
+              </dd>
             </div>
             <div className="space-y-1">
               <dt className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                <User className="h-4 w-4" />
+                <User className="h-4 w-4" aria-hidden="true" />
                 Age
               </dt>
-              <dd className="text-base font-semibold text-foreground">{patient.age}</dd>
+              <dd className="text-base font-semibold text-foreground">
+                {patient.age}
+              </dd>
             </div>
             <div className="space-y-1">
               <dt className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                <User className="h-4 w-4" />
+                <User className="h-4 w-4" aria-hidden="true" />
                 Gender
               </dt>
-              <dd className="text-base font-semibold text-foreground">{patient.gender}</dd>
+              <dd className="text-base font-semibold text-foreground">
+                {patient.gender}
+              </dd>
             </div>
             <div className="space-y-1 sm:col-span-2">
               <dt className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                <Stethoscope className="h-4 w-4" />
+                <Stethoscope className="h-4 w-4" aria-hidden="true" />
                 Medical Condition
               </dt>
-              <dd className="text-base font-semibold text-foreground">{patient.medicalCondition}</dd>
+              <dd className="text-base font-semibold text-foreground">
+                {patient.medicalCondition}
+              </dd>
             </div>
             <div className="space-y-1">
               <dt className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                <Calendar className="h-4 w-4" />
+                <Calendar className="h-4 w-4" aria-hidden="true" />
                 Last Visit
               </dt>
-              <dd className="text-base font-semibold text-foreground">{patient.lastVisit}</dd>
+              <dd className="text-base font-semibold text-foreground">
+                {patient.lastVisit}
+              </dd>
             </div>
           </dl>
           <div className="flex justify-end pt-4">
@@ -85,4 +104,3 @@ export function PatientViewDialog({ patient, open, onOpenChange }: PatientViewDi
     </div>
   )
 }
-

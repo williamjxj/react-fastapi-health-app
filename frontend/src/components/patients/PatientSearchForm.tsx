@@ -16,11 +16,17 @@ export function PatientSearchForm({ onSearchChange }: PatientSearchFormProps) {
 
   return (
     <div className="space-y-2">
-      <label htmlFor="patientSearch" className="text-sm font-medium text-foreground">
+      <label
+        htmlFor="patientSearch"
+        className="text-sm font-medium text-foreground"
+      >
         Search by Patient ID or Name
       </label>
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Search
+          className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground"
+          aria-hidden="true"
+        />
         <input
           id="patientSearch"
           type="text"

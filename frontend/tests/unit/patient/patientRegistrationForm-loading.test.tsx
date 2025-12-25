@@ -6,7 +6,7 @@ import { PatientRegistrationForm } from '@/components/patients/PatientRegistrati
 // Mock API service
 const mockCreatePatient = vi.fn()
 vi.mock('@/lib/api/patientService', () => ({
-  createPatient: (...args: any[]) => mockCreatePatient(...args),
+  createPatient: (...args: unknown[]) => mockCreatePatient(...args),
 }))
 
 beforeEach(() => {

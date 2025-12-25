@@ -23,11 +23,6 @@ describe('Touch Target Sizes (Mobile Breakpoints)', () => {
     // Buttons should have minimum size classes
     // h-10 = 40px, h-11 = 44px - verify buttons use appropriate sizes
     buttons.forEach(button => {
-      // Buttons should have height classes that meet minimum
-      const hasHeight = button.className.includes('h-') || 
-                       button.className.includes('h-9') || 
-                       button.className.includes('h-10') || 
-                       button.className.includes('h-11')
       // Structural check - actual size verified in browser
       expect(button).toBeInTheDocument()
     })

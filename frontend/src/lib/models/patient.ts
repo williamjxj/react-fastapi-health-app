@@ -20,7 +20,9 @@ export interface PatientValidationError {
 /**
  * Validate a patient payload according to business rules.
  */
-export function validatePatient(input: Partial<PatientInput>): PatientValidationError[] {
+export function validatePatient(
+  input: Partial<PatientInput>
+): PatientValidationError[] {
   const errors: PatientValidationError[] = []
   if (!input.patientID || input.patientID.trim().length === 0) {
     errors.push({ field: 'patientID', message: 'Patient ID is required.' })
@@ -37,12 +39,18 @@ export function validatePatient(input: Partial<PatientInput>): PatientValidation
     errors.push({ field: 'gender', message: 'Gender is required.' })
   }
   if (!input.medicalCondition || input.medicalCondition.trim().length === 0) {
-    errors.push({ field: 'medicalCondition', message: 'Medical condition is required.' })
+    errors.push({
+      field: 'medicalCondition',
+      message: 'Medical condition is required.',
+    })
   }
   if (!input.lastVisit || input.lastVisit.trim().length === 0) {
     errors.push({ field: 'lastVisit', message: 'Last visit date is required.' })
   } else if (!/^\d{4}-\d{2}-\d{2}$/.test(input.lastVisit)) {
-    errors.push({ field: 'lastVisit', message: 'Last visit must be in YYYY-MM-DD format.' })
+    errors.push({
+      field: 'lastVisit',
+      message: 'Last visit must be in YYYY-MM-DD format.',
+    })
   }
   return errors
 }

@@ -1,10 +1,21 @@
 import { FormEvent, useState, useEffect } from 'react'
-import { X, Hash, User, Calendar, Stethoscope, AlertCircle, Loader2 } from 'lucide-react'
+import {
+  X,
+  Hash,
+  User,
+  Calendar,
+  Stethoscope,
+  AlertCircle,
+  Loader2,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { Patient, Gender, PatientInput } from '@/lib/models/patient'
 import { validatePatient } from '@/lib/models/patient'
-import { updatePatient, type PatientUpdateInput } from '@/lib/api/patientService'
+import {
+  updatePatient,
+  type PatientUpdateInput,
+} from '@/lib/api/patientService'
 
 interface PatientEditDialogProps {
   patient: Patient
@@ -15,7 +26,12 @@ interface PatientEditDialogProps {
 
 const genders: Gender[] = ['Male', 'Female', 'Other']
 
-export function PatientEditDialog({ patient, open, onOpenChange, onSuccess }: PatientEditDialogProps) {
+export function PatientEditDialog({
+  patient,
+  open,
+  onOpenChange,
+  onSuccess,
+}: PatientEditDialogProps) {
   const [form, setForm] = useState<PatientInput>({
     patientID: patient.patientID,
     name: patient.name,
@@ -24,7 +40,9 @@ export function PatientEditDialog({ patient, open, onOpenChange, onSuccess }: Pa
     medicalCondition: patient.medicalCondition,
     lastVisit: patient.lastVisit,
   })
-  const [errors, setErrors] = useState<Array<{ field: keyof PatientInput; message: string }>>([])
+  const [errors, setErrors] = useState<
+    Array<{ field: keyof PatientInput; message: string }>
+  >([])
   const [submitting, setSubmitting] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
 
@@ -58,12 +76,17 @@ export function PatientEditDialog({ patient, open, onOpenChange, onSuccess }: Pa
     setSubmitting(true)
     try {
       const updateData: PatientUpdateInput = {
-        patientID: form.patientID !== patient.patientID ? form.patientID : undefined,
+        patientID:
+          form.patientID !== patient.patientID ? form.patientID : undefined,
         name: form.name !== patient.name ? form.name : undefined,
         age: form.age !== patient.age ? form.age : undefined,
         gender: form.gender !== patient.gender ? form.gender : undefined,
-        medicalCondition: form.medicalCondition !== patient.medicalCondition ? form.medicalCondition : undefined,
-        lastVisit: form.lastVisit !== patient.lastVisit ? form.lastVisit : undefined,
+        medicalCondition:
+          form.medicalCondition !== patient.medicalCondition
+            ? form.medicalCondition
+            : undefined,
+        lastVisit:
+          form.lastVisit !== patient.lastVisit ? form.lastVisit : undefined,
       }
       await updatePatient(patient.patientID, updateData)
       setMessage('Patient updated successfully.')
@@ -72,7 +95,8 @@ export function PatientEditDialog({ patient, open, onOpenChange, onSuccess }: Pa
         onOpenChange(false)
       }, 1000)
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Failed to update patient.'
+      const msg =
+        err instanceof Error ? err.message : 'Failed to update patient.'
       setMessage(msg)
     } finally {
       setSubmitting(false)
@@ -94,22 +118,28 @@ export function PatientEditDialog({ patient, open, onOpenChange, onSuccess }: Pa
         onClick={(e) => e.stopPropagation()}
       >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-          <CardTitle className="text-2xl font-semibold text-foreground">Edit Patient</CardTitle>
+          <CardTitle className="text-2xl font-semibold text-foreground">
+            Edit Patient
+          </CardTitle>
           <Button
             variant="ghost"
             size="sm"
             onClick={() => onOpenChange(false)}
             className="h-8 w-8 p-0"
+            aria-label="Close dialog"
           >
-            <X className="h-4 w-4" />
+            <X className="h-4 w-4" aria-hidden="true" />
           </Button>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6" noValidate>
             <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-2">
-                <label htmlFor="edit-patientID" className="text-sm font-medium flex items-center gap-2">
-                  <Hash className="h-4 w-4" />
+                <label
+                  htmlFor="edit-patientID"
+                  className="text-sm font-medium flex items-center gap-2"
+                >
+                  <Hash className="h-4 w-4" aria-hidden="true" />
                   Patient ID <span className="text-destructive">*</span>
                 </label>
                 <input
@@ -118,17 +148,27 @@ export function PatientEditDialog({ patient, open, onOpenChange, onSuccess }: Pa
                   value={form.patientID}
                   onChange={(e) => updateField('patientID', e.target.value)}
                   aria-invalid={!!errorFor('patientID')}
+                  aria-describedby={
+                    errorFor('patientID') ? 'edit-patientID-error' : undefined
+                  }
                 />
                 {errorFor('patientID') && (
-                  <p className="text-sm font-medium text-destructive flex items-center gap-1" role="alert">
-                    <AlertCircle className="h-4 w-4" />
+                  <p
+                    id="edit-patientID-error"
+                    className="text-sm font-medium text-destructive flex items-center gap-1"
+                    role="alert"
+                  >
+                    <AlertCircle className="h-4 w-4" aria-hidden="true" />
                     {errorFor('patientID')}
                   </p>
                 )}
               </div>
               <div className="space-y-2">
-                <label htmlFor="edit-name" className="text-sm font-medium flex items-center gap-2">
-                  <User className="h-4 w-4" />
+                <label
+                  htmlFor="edit-name"
+                  className="text-sm font-medium flex items-center gap-2"
+                >
+                  <User className="h-4 w-4" aria-hidden="true" />
                   Name <span className="text-destructive">*</span>
                 </label>
                 <input
@@ -137,17 +177,27 @@ export function PatientEditDialog({ patient, open, onOpenChange, onSuccess }: Pa
                   value={form.name}
                   onChange={(e) => updateField('name', e.target.value)}
                   aria-invalid={!!errorFor('name')}
+                  aria-describedby={
+                    errorFor('name') ? 'edit-name-error' : undefined
+                  }
                 />
                 {errorFor('name') && (
-                  <p className="text-sm font-medium text-destructive flex items-center gap-1" role="alert">
-                    <AlertCircle className="h-4 w-4" />
+                  <p
+                    id="edit-name-error"
+                    className="text-sm font-medium text-destructive flex items-center gap-1"
+                    role="alert"
+                  >
+                    <AlertCircle className="h-4 w-4" aria-hidden="true" />
                     {errorFor('name')}
                   </p>
                 )}
               </div>
               <div className="space-y-2">
-                <label htmlFor="edit-age" className="text-sm font-medium flex items-center gap-2">
-                  <User className="h-4 w-4" />
+                <label
+                  htmlFor="edit-age"
+                  className="text-sm font-medium flex items-center gap-2"
+                >
+                  <User className="h-4 w-4" aria-hidden="true" />
                   Age <span className="text-destructive">*</span>
                 </label>
                 <input
@@ -156,19 +206,31 @@ export function PatientEditDialog({ patient, open, onOpenChange, onSuccess }: Pa
                   min="1"
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive"
                   value={form.age || ''}
-                  onChange={(e) => updateField('age', Number(e.target.value) || 0)}
+                  onChange={(e) =>
+                    updateField('age', Number(e.target.value) || 0)
+                  }
                   aria-invalid={!!errorFor('age')}
+                  aria-describedby={
+                    errorFor('age') ? 'edit-age-error' : undefined
+                  }
                 />
                 {errorFor('age') && (
-                  <p className="text-sm font-medium text-destructive flex items-center gap-1" role="alert">
-                    <AlertCircle className="h-4 w-4" />
+                  <p
+                    id="edit-age-error"
+                    className="text-sm font-medium text-destructive flex items-center gap-1"
+                    role="alert"
+                  >
+                    <AlertCircle className="h-4 w-4" aria-hidden="true" />
                     {errorFor('age')}
                   </p>
                 )}
               </div>
               <div className="space-y-2">
-                <label htmlFor="edit-gender" className="text-sm font-medium flex items-center gap-2">
-                  <User className="h-4 w-4" />
+                <label
+                  htmlFor="edit-gender"
+                  className="text-sm font-medium flex items-center gap-2"
+                >
+                  <User className="h-4 w-4" aria-hidden="true" />
                   Gender <span className="text-destructive">*</span>
                 </label>
                 <select
@@ -185,8 +247,11 @@ export function PatientEditDialog({ patient, open, onOpenChange, onSuccess }: Pa
                 </select>
               </div>
               <div className="md:col-span-2 space-y-2">
-                <label htmlFor="edit-medicalCondition" className="text-sm font-medium flex items-center gap-2">
-                  <Stethoscope className="h-4 w-4" />
+                <label
+                  htmlFor="edit-medicalCondition"
+                  className="text-sm font-medium flex items-center gap-2"
+                >
+                  <Stethoscope className="h-4 w-4" aria-hidden="true" />
                   Medical Condition <span className="text-destructive">*</span>
                 </label>
                 <textarea
@@ -194,19 +259,33 @@ export function PatientEditDialog({ patient, open, onOpenChange, onSuccess }: Pa
                   rows={3}
                   className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive"
                   value={form.medicalCondition}
-                  onChange={(e) => updateField('medicalCondition', e.target.value)}
+                  onChange={(e) =>
+                    updateField('medicalCondition', e.target.value)
+                  }
                   aria-invalid={!!errorFor('medicalCondition')}
+                  aria-describedby={
+                    errorFor('medicalCondition')
+                      ? 'edit-medicalCondition-error'
+                      : undefined
+                  }
                 />
                 {errorFor('medicalCondition') && (
-                  <p className="text-sm font-medium text-destructive flex items-center gap-1" role="alert">
-                    <AlertCircle className="h-4 w-4" />
+                  <p
+                    id="edit-medicalCondition-error"
+                    className="text-sm font-medium text-destructive flex items-center gap-1"
+                    role="alert"
+                  >
+                    <AlertCircle className="h-4 w-4" aria-hidden="true" />
                     {errorFor('medicalCondition')}
                   </p>
                 )}
               </div>
               <div className="space-y-2">
-                <label htmlFor="edit-lastVisit" className="text-sm font-medium flex items-center gap-2">
-                  <Calendar className="h-4 w-4" />
+                <label
+                  htmlFor="edit-lastVisit"
+                  className="text-sm font-medium flex items-center gap-2"
+                >
+                  <Calendar className="h-4 w-4" aria-hidden="true" />
                   Last Visit <span className="text-destructive">*</span>
                 </label>
                 <input
@@ -216,17 +295,28 @@ export function PatientEditDialog({ patient, open, onOpenChange, onSuccess }: Pa
                   value={form.lastVisit}
                   onChange={(e) => updateField('lastVisit', e.target.value)}
                   aria-invalid={!!errorFor('lastVisit')}
+                  aria-describedby={
+                    errorFor('lastVisit') ? 'edit-lastVisit-error' : undefined
+                  }
                 />
                 {errorFor('lastVisit') && (
-                  <p className="text-sm font-medium text-destructive flex items-center gap-1" role="alert">
-                    <AlertCircle className="h-4 w-4" />
+                  <p
+                    id="edit-lastVisit-error"
+                    className="text-sm font-medium text-destructive flex items-center gap-1"
+                    role="alert"
+                  >
+                    <AlertCircle className="h-4 w-4" aria-hidden="true" />
                     {errorFor('lastVisit')}
                   </p>
                 )}
               </div>
             </div>
             <div className="flex items-center justify-end gap-4 pt-4">
-              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+              >
                 Cancel
               </Button>
               <Button type="submit" disabled={submitting}>
@@ -249,7 +339,9 @@ export function PatientEditDialog({ patient, open, onOpenChange, onSuccess }: Pa
                 }`}
                 role="status"
               >
-                {message.includes('successfully') ? null : <AlertCircle className="h-4 w-4" />}
+                {message.includes('successfully') ? null : (
+                  <AlertCircle className="h-4 w-4" aria-hidden="true" />
+                )}
                 {message}
               </p>
             )}
@@ -259,4 +351,3 @@ export function PatientEditDialog({ patient, open, onOpenChange, onSuccess }: Pa
     </div>
   )
 }
-

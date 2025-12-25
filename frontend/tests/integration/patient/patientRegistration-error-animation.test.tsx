@@ -6,7 +6,7 @@ import { PatientRegistrationForm } from '@/components/patients/PatientRegistrati
 // Mock API error
 const mockCreatePatient = vi.fn().mockRejectedValue(new Error('Network error'))
 vi.mock('@/lib/api/patientService', () => ({
-  createPatient: (...args: any[]) => mockCreatePatient(...args),
+  createPatient: (...args: unknown[]) => mockCreatePatient(...args),
 }))
 
 beforeEach(() => {

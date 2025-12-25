@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 
 describe('Animation Performance (60fps)', () => {
   it('should maintain 60fps for fade animations', () => {

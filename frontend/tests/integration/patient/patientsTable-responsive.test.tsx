@@ -22,7 +22,6 @@ describe('PatientsTable Responsive Design', () => {
 
   it('should maintain table structure at all breakpoints', () => {
     const { container } = render(<PatientsTable />)
-    const table = container.querySelector('table')
     
     // Table should exist (or empty state)
     expect(container.firstChild).toBeInTheDocument()

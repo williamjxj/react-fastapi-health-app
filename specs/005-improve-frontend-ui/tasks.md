@@ -209,28 +209,28 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation. TDD is NON-NEGOTIABLE.**
 
-- [ ] T090 [P] [US5] Keyboard navigation test for logical tab order in `frontend/tests/integration/accessibility/keyboard-navigation.test.tsx`
-- [ ] T091 [P] [US5] Keyboard navigation test for visible focus indicators in `frontend/tests/integration/accessibility/focus-indicators.test.tsx`
-- [ ] T092 [P] [US5] Screen reader test for ARIA labels in `frontend/tests/integration/accessibility/aria-labels.test.tsx`
-- [ ] T093 [P] [US5] Screen reader test for semantic HTML structure in `frontend/tests/integration/accessibility/semantic-html.test.tsx`
-- [ ] T094 [P] [US5] WCAG 2.1 AA compliance test for color contrast in `frontend/tests/integration/accessibility/wcag-contrast.test.tsx`
-- [ ] T095 [P] [US5] WCAG 2.1 AA compliance test for keyboard navigation in `frontend/tests/integration/accessibility/wcag-keyboard.test.tsx`
-- [ ] T096 [P] [US5] WCAG 2.1 AA compliance test for screen reader compatibility in `frontend/tests/integration/accessibility/wcag-screen-reader.test.tsx`
+- [x] T090 [P] [US5] Keyboard navigation test for logical tab order in `frontend/tests/integration/accessibility/keyboard-navigation.test.tsx`
+- [x] T091 [P] [US5] Keyboard navigation test for visible focus indicators in `frontend/tests/integration/accessibility/focus-indicators.test.tsx`
+- [x] T092 [P] [US5] Screen reader test for ARIA labels in `frontend/tests/integration/accessibility/aria-labels.test.tsx`
+- [x] T093 [P] [US5] Screen reader test for semantic HTML structure in `frontend/tests/integration/accessibility/semantic-html.test.tsx`
+- [x] T094 [P] [US5] WCAG 2.1 AA compliance test for color contrast in `frontend/tests/integration/accessibility/wcag-contrast.test.tsx`
+- [x] T095 [P] [US5] WCAG 2.1 AA compliance test for keyboard navigation in `frontend/tests/integration/accessibility/wcag-keyboard.test.tsx`
+- [x] T096 [P] [US5] WCAG 2.1 AA compliance test for screen reader compatibility in `frontend/tests/integration/accessibility/wcag-screen-reader.test.tsx`
 
 ### Implementation for User Story 5
 
-- [ ] T097 [US5] Add logical tab order to PatientManagementPage component in `frontend/src/components/patients/PatientManagementPage.tsx`
-- [ ] T098 [P] [US5] Add visible focus indicators to all interactive elements in PatientRegistrationForm component in `frontend/src/components/patients/PatientRegistrationForm.tsx`
-- [ ] T099 [P] [US5] Add visible focus indicators to all interactive elements in PatientSearchForm component in `frontend/src/components/patients/PatientSearchForm.tsx`
-- [ ] T100 [P] [US5] Add visible focus indicators to all interactive elements in PatientsTable component in `frontend/src/components/patients/PatientsTable.tsx`
-- [ ] T101 [P] [US5] Add appropriate ARIA labels to PatientRegistrationForm component in `frontend/src/components/patients/PatientRegistrationForm.tsx`
-- [ ] T102 [P] [US5] Add appropriate ARIA labels to PatientSearchForm component in `frontend/src/components/patients/PatientSearchForm.tsx`
-- [ ] T103 [P] [US5] Add appropriate ARIA labels to PatientsTable component in `frontend/src/components/patients/PatientsTable.tsx`
-- [ ] T104 [P] [US5] Ensure semantic HTML structure in PatientEditDialog component in `frontend/src/components/patients/PatientEditDialog.tsx`
-- [ ] T105 [P] [US5] Ensure semantic HTML structure in PatientViewDialog component in `frontend/src/components/patients/PatientViewDialog.tsx`
-- [ ] T106 [US5] Verify all interactive elements receive focus in logical order
-- [ ] T107 [US5] Verify all elements have appropriate ARIA labels for screen readers
-- [ ] T108 [US5] Verify all primary tasks can be completed using only keyboard navigation
+- [x] T097 [US5] Add logical tab order to PatientManagementPage component in `frontend/src/components/patients/PatientManagementPage.tsx`
+- [x] T098 [P] [US5] Add visible focus indicators to all interactive elements in PatientRegistrationForm component in `frontend/src/components/patients/PatientRegistrationForm.tsx`
+- [x] T099 [P] [US5] Add visible focus indicators to all interactive elements in PatientSearchForm component in `frontend/src/components/patients/PatientSearchForm.tsx`
+- [x] T100 [P] [US5] Add visible focus indicators to all interactive elements in PatientsTable component in `frontend/src/components/patients/PatientsTable.tsx`
+- [x] T101 [P] [US5] Add appropriate ARIA labels to PatientRegistrationForm component in `frontend/src/components/patients/PatientRegistrationForm.tsx`
+- [x] T102 [P] [US5] Add appropriate ARIA labels to PatientSearchForm component in `frontend/src/components/patients/PatientSearchForm.tsx`
+- [x] T103 [P] [US5] Add appropriate ARIA labels to PatientsTable component in `frontend/src/components/patients/PatientsTable.tsx`
+- [x] T104 [P] [US5] Ensure semantic HTML structure in PatientEditDialog component in `frontend/src/components/patients/PatientEditDialog.tsx`
+- [x] T105 [P] [US5] Ensure semantic HTML structure in PatientViewDialog component in `frontend/src/components/patients/PatientViewDialog.tsx`
+- [x] T106 [US5] Verify all interactive elements receive focus in logical order
+- [x] T107 [US5] Verify all elements have appropriate ARIA labels for screen readers
+- [x] T108 [US5] Verify all primary tasks can be completed using only keyboard navigation
 
 **Checkpoint**: At this point, all user stories should be independently functional. Full accessibility compliance should be achieved.
 
@@ -241,11 +241,11 @@
 **Purpose**: Improvements that affect multiple user stories and ensure constitution compliance
 
 **Code Quality:**
-- [ ] T109 [P] Code quality audit: run ESLint and fix all violations in `frontend/` directory
-- [ ] T110 [P] Code quality audit: run Prettier and format all code in `frontend/` directory
-- [ ] T111 [P] Documentation updates: ensure all new UI components include JSDoc/TypeScript documentation
+- [x] T109 [P] Code quality audit: run ESLint and fix all violations in `frontend/` directory
+- [x] T110 [P] Code quality audit: run Prettier and format all code in `frontend/` directory
+- [x] T111 [P] Documentation updates: ensure all new UI components include JSDoc/TypeScript documentation
 - [ ] T112 Code cleanup and refactoring to reduce complexity (cyclomatic complexity < 10 per function)
-- [ ] T113 [P] TypeScript type checking: ensure zero type errors in `frontend/` directory
+- [x] T113 [P] TypeScript type checking: ensure zero type errors in `frontend/` directory
 
 **Testing:**
 - [ ] T114 [P] Verify unit test coverage meets 80% threshold in `frontend/tests/unit/` directory

@@ -1,5 +1,13 @@
 import { cn } from '@/lib/utils'
 
+/**
+ * Skeleton component for displaying loading states.
+ * Provides a visual placeholder that pulses while content is loading.
+ *
+ * @param className - Additional CSS classes to apply
+ * @param props - Standard HTML div attributes
+ * @returns A skeleton loading indicator
+ */
 function Skeleton({
   className,
   ...props
@@ -13,4 +21,3 @@ function Skeleton({
 }
 
 export { Skeleton }
-

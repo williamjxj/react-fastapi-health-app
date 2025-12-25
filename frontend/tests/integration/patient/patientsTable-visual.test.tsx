@@ -14,7 +14,6 @@ vi.mock('@/lib/api/patientService', () => ({
 describe('PatientsTable Visual Regression', () => {
   it('should apply Ocean Breeze theme colors', () => {
     const { container } = render(<PatientsTable />)
-    const table = container.querySelector('table')
     
     // Table should be rendered (or empty state)
     expect(container.firstChild).toBeInTheDocument()

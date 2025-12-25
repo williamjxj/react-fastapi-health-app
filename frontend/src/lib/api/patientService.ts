@@ -1,6 +1,7 @@
 import type { Patient, PatientInput } from '@/lib/models/patient'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000'
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000'
 const PATIENTS_ENDPOINT = `${API_BASE_URL}/patients`
 
 export interface PaginatedPatients {
@@ -19,7 +20,7 @@ export interface PatientQueryParams {
   sort_order?: 'asc' | 'desc'
 }
 
-export interface PatientUpdateInput extends Partial<PatientInput> {}
+export type PatientUpdateInput = Partial<PatientInput>
 
 async function handleResponse<T>(res: Response): Promise<T> {
   if (!res.ok) {
@@ -43,7 +44,8 @@ function buildQueryString(params: PatientQueryParams): string {
   const searchParams = new URLSearchParams()
   if (params.search) searchParams.set('search', params.search)
   if (params.page) searchParams.set('page', params.page.toString())
-  if (params.page_size) searchParams.set('page_size', params.page_size.toString())
+  if (params.page_size)
+    searchParams.set('page_size', params.page_size.toString())
   if (params.sort_by) searchParams.set('sort_by', params.sort_by)
   if (params.sort_order) searchParams.set('sort_order', params.sort_order)
   return searchParams.toString()
@@ -52,9 +54,13 @@ function buildQueryString(params: PatientQueryParams): string {
 /**
  * Fetch patients with search, pagination, and sorting.
  */
-export async function getPatients(params?: PatientQueryParams): Promise<PaginatedPatients> {
+export async function getPatients(
+  params?: PatientQueryParams
+): Promise<PaginatedPatients> {
   const queryString = params ? buildQueryString(params) : ''
-  const url = queryString ? `${PATIENTS_ENDPOINT}?${queryString}` : PATIENTS_ENDPOINT
+  const url = queryString
+    ? `${PATIENTS_ENDPOINT}?${queryString}`
+    : PATIENTS_ENDPOINT
   const res = await fetch(url)
   return handleResponse<PaginatedPatients>(res)
 }
