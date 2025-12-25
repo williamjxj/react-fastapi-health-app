@@ -16,7 +16,7 @@ export function PatientSearchForm({ onSearchChange }: PatientSearchFormProps) {
 
   return (
     <div className="space-y-2">
-      <label htmlFor="patientSearch" className="text-sm font-medium">
+      <label htmlFor="patientSearch" className="text-sm font-medium text-foreground">
         Search by Patient ID or Name
       </label>
       <div className="relative">

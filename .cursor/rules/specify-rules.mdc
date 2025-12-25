@@ -3,6 +3,8 @@
 Auto-generated from all feature plans. Last updated: 2025-12-22
 
 ## Active Technologies
+- TypeScript 5.5.3, React 18.3.1 (005-improve-frontend-ui)
+- N/A (UI-only feature, no data persistence changes) (005-improve-frontend-ui)
 
 - TypeScript 5.x (latest stable), React 18.x (latest stable), Node.js 18+ (LTS recommended) (001-init-react-app)
 
@@ -23,6 +25,7 @@ npm test && npm run lint
 TypeScript 5.x (latest stable), React 18.x (latest stable), Node.js 18+ (LTS recommended): Follow standard conventions
 
 ## Recent Changes
+- 005-improve-frontend-ui: Added TypeScript 5.5.3, React 18.3.1
 
 - 001-init-react-app: Added TypeScript 5.x (latest stable), React 18.x (latest stable), Node.js 18+ (LTS recommended)
 

@@ -18,11 +18,11 @@ export function PatientViewDialog({ patient, open, onOpenChange }: PatientViewDi
       onClick={() => onOpenChange(false)}
     >
       <Card
-        className="w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto"
+        className="w-full max-w-2xl mx-4 sm:mx-6 md:mx-8 max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-          <CardTitle className="text-2xl">Patient Details</CardTitle>
+          <CardTitle className="text-2xl font-semibold text-foreground">Patient Details</CardTitle>
           <Button
             variant="ghost"
             size="sm"
@@ -39,42 +39,42 @@ export function PatientViewDialog({ patient, open, onOpenChange }: PatientViewDi
                 <Hash className="h-4 w-4" />
                 Patient ID
               </dt>
-              <dd className="text-base font-semibold">{patient.patientID}</dd>
+              <dd className="text-base font-semibold text-foreground">{patient.patientID}</dd>
             </div>
             <div className="space-y-1">
               <dt className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                 <User className="h-4 w-4" />
                 Name
               </dt>
-              <dd className="text-base font-semibold">{patient.name}</dd>
+              <dd className="text-base font-semibold text-foreground">{patient.name}</dd>
             </div>
             <div className="space-y-1">
               <dt className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                 <User className="h-4 w-4" />
                 Age
               </dt>
-              <dd className="text-base font-semibold">{patient.age}</dd>
+              <dd className="text-base font-semibold text-foreground">{patient.age}</dd>
             </div>
             <div className="space-y-1">
               <dt className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                 <User className="h-4 w-4" />
                 Gender
               </dt>
-              <dd className="text-base font-semibold">{patient.gender}</dd>
+              <dd className="text-base font-semibold text-foreground">{patient.gender}</dd>
             </div>
             <div className="space-y-1 sm:col-span-2">
               <dt className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                 <Stethoscope className="h-4 w-4" />
                 Medical Condition
               </dt>
-              <dd className="text-base font-semibold">{patient.medicalCondition}</dd>
+              <dd className="text-base font-semibold text-foreground">{patient.medicalCondition}</dd>
             </div>
             <div className="space-y-1">
               <dt className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
                 Last Visit
               </dt>
-              <dd className="text-base font-semibold">{patient.lastVisit}</dd>
+              <dd className="text-base font-semibold text-foreground">{patient.lastVisit}</dd>
             </div>
           </dl>
           <div className="flex justify-end pt-4">

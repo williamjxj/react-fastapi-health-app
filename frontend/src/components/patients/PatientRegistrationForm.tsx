@@ -71,11 +71,11 @@ export function PatientRegistrationForm({ onCreated }: Props) {
             <div className="space-y-2">
               <label htmlFor="patientID" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center gap-2">
                 <Hash className="h-4 w-4" />
-                Patient ID <span className="text-red-500">*</span>
+                Patient ID <span className="text-destructive">*</span>
               </label>
               <input
                 id="patientID"
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 aria-[invalid=true]:border-red-500"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive"
                 value={form.patientID}
                 onChange={(e) => updateField('patientID', e.target.value)}
                 aria-invalid={!!errorFor('patientID')}
@@ -92,11 +92,11 @@ export function PatientRegistrationForm({ onCreated }: Props) {
             <div className="space-y-2">
               <label htmlFor="name" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center gap-2">
                 <User className="h-4 w-4" />
-                Name <span className="text-red-500">*</span>
+                Name <span className="text-destructive">*</span>
               </label>
               <input
                 id="name"
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 aria-[invalid=true]:border-red-500"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive"
                 value={form.name}
                 onChange={(e) => updateField('name', e.target.value)}
                 aria-invalid={!!errorFor('name')}
@@ -113,13 +113,13 @@ export function PatientRegistrationForm({ onCreated }: Props) {
             <div className="space-y-2">
               <label htmlFor="age" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center gap-2">
                 <User className="h-4 w-4" />
-                Age <span className="text-red-500">*</span>
+                Age <span className="text-destructive">*</span>
               </label>
               <input
                 id="age"
                 type="number"
                 min="1"
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 aria-[invalid=true]:border-red-500"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive"
                 value={form.age || ''}
                 onChange={(e) => updateField('age', Number(e.target.value) || 0)}
                 aria-invalid={!!errorFor('age')}
@@ -136,7 +136,7 @@ export function PatientRegistrationForm({ onCreated }: Props) {
             <div className="space-y-2">
               <label htmlFor="gender" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center gap-2">
                 <User className="h-4 w-4" />
-                Gender <span className="text-red-500">*</span>
+                Gender <span className="text-destructive">*</span>
               </label>
               <select
                 id="gender"
@@ -154,12 +154,12 @@ export function PatientRegistrationForm({ onCreated }: Props) {
             <div className="md:col-span-2 space-y-2">
               <label htmlFor="medicalCondition" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center gap-2">
                 <Stethoscope className="h-4 w-4" />
-                Medical Condition <span className="text-red-500">*</span>
+                Medical Condition <span className="text-destructive">*</span>
               </label>
               <textarea
                 id="medicalCondition"
                 rows={3}
-                className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 aria-[invalid=true]:border-red-500"
+                className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive"
                 value={form.medicalCondition}
                 onChange={(e) => updateField('medicalCondition', e.target.value)}
                 aria-invalid={!!errorFor('medicalCondition')}
@@ -182,12 +182,12 @@ export function PatientRegistrationForm({ onCreated }: Props) {
             <div className="space-y-2">
               <label htmlFor="lastVisit" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
-                Last Visit <span className="text-red-500">*</span>
+                Last Visit <span className="text-destructive">*</span>
               </label>
               <input
                 id="lastVisit"
                 type="date"
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 aria-[invalid=true]:border-red-500"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive"
                 value={form.lastVisit}
                 onChange={(e) => updateField('lastVisit', e.target.value)}
                 aria-invalid={!!errorFor('lastVisit')}
@@ -217,7 +217,7 @@ export function PatientRegistrationForm({ onCreated }: Props) {
             </Button>
             {message && (
               <p
-                className={`text-sm font-medium flex items-center gap-2 ${
+                className={`text-sm font-medium flex items-center gap-2 animate-fade-in ${
                   message.includes('successfully')
                     ? 'text-green-600 dark:text-green-400'
                     : 'text-destructive'

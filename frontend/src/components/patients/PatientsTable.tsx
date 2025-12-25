@@ -1,6 +1,8 @@
 import { useEffect, useState, useCallback, forwardRef, useImperativeHandle } from 'react'
 import { Loader2, AlertCircle, ChevronLeft, ChevronRight, ArrowUpDown, ArrowUp, ArrowDown, Eye, Edit, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
+import { EmptyState } from '@/components/ui/empty-state'
 import type { Patient } from '@/lib/models/patient'
 import { getPatients, deletePatient, type PatientQueryParams } from '@/lib/api/patientService'
 import { PatientEditDialog } from './PatientEditDialog'
@@ -133,16 +135,57 @@ export const PatientsTable = forwardRef<PatientsTableRef, PatientsTableProps>(
       )}
 
       {loading && patients.length === 0 ? (
-        <div className="flex items-center justify-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        <div className="space-y-4 py-8">
+          <div className="flex flex-col items-center justify-center space-y-4">
+            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+            <p className="text-sm text-muted-foreground">Loading patients...</p>
+          </div>
+          <div className="rounded-md border">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b bg-muted/50">
+                    <th className="h-12 px-4 text-left"><Skeleton className="h-4 w-20" /></th>
+                    <th className="h-12 px-4 text-left"><Skeleton className="h-4 w-24" /></th>
+                    <th className="h-12 px-4 text-left"><Skeleton className="h-4 w-16" /></th>
+                    <th className="h-12 px-4 text-left"><Skeleton className="h-4 w-20" /></th>
+                    <th className="h-12 px-4 text-left"><Skeleton className="h-4 w-32" /></th>
+                    <th className="h-12 px-4 text-left"><Skeleton className="h-4 w-24" /></th>
+                    <th className="h-12 px-4 text-left"><Skeleton className="h-4 w-20" /></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <tr key={i} className="border-b">
+                      <td className="p-4"><Skeleton className="h-4 w-16" /></td>
+                      <td className="p-4"><Skeleton className="h-4 w-32" /></td>
+                      <td className="p-4"><Skeleton className="h-4 w-12" /></td>
+                      <td className="p-4"><Skeleton className="h-4 w-20" /></td>
+                      <td className="p-4"><Skeleton className="h-4 w-40" /></td>
+                      <td className="p-4"><Skeleton className="h-4 w-24" /></td>
+                      <td className="p-4"><Skeleton className="h-4 w-16" /></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       ) : patients.length === 0 ? (
-        <div className="text-center py-12 text-muted-foreground">
-          <p className="text-lg font-medium">No patients found</p>
-          <p className="text-sm">
-            {search ? 'Try adjusting your search criteria' : 'Register a new patient to get started'}
-          </p>
-        </div>
+        <EmptyState
+          title="No patients found"
+          description={
+            search
+              ? 'Try adjusting your search criteria to find patients.'
+              : 'Get started by registering your first patient.'
+          }
+          actionLabel={search ? undefined : 'Register First Patient'}
+          onAction={search ? undefined : () => {
+            // Scroll to registration form or trigger registration
+            const registrationSection = document.querySelector('[aria-labelledby="patient-registration-heading"]')
+            registrationSection?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }}
+        />
       ) : (
         <>
           <div className="rounded-md border">
@@ -195,40 +238,45 @@ export const PatientsTable = forwardRef<PatientsTableRef, PatientsTableProps>(
                   {patients.map((patient) => (
                     <tr
                       key={patient.id}
-                      className="border-b transition-colors hover:bg-muted/50"
+                      className="border-b transition-colors duration-200 hover:bg-muted/50"
                     >
-                      <td className="p-4 align-middle font-medium">
+                      <td className="p-4 align-middle font-medium text-foreground">
                         {patient.patientID}
                       </td>
-                      <td className="p-4 align-middle">{patient.name}</td>
-                      <td className="p-4 align-middle">{patient.age}</td>
-                      <td className="p-4 align-middle">{patient.gender}</td>
-                      <td className="p-4 align-middle">{patient.medicalCondition}</td>
-                      <td className="p-4 align-middle">{patient.lastVisit}</td>
+                      <td className="p-4 align-middle text-foreground">{patient.name}</td>
+                      <td className="p-4 align-middle text-foreground">{patient.age}</td>
+                      <td className="p-4 align-middle text-muted-foreground">{patient.gender}</td>
+                      <td className="p-4 align-middle text-foreground">{patient.medicalCondition}</td>
+                      <td className="p-4 align-middle text-muted-foreground">{patient.lastVisit}</td>
                       <td className="p-4 align-middle">
                         <div className="flex items-center gap-2">
                           <Button
                             variant="ghost"
                             size="sm"
+                            className="min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0"
                             onClick={() => handleView(patient)}
                             title="View details"
+                            aria-label="View patient details"
                           >
                             <Eye className="h-4 w-4" />
                           </Button>
                           <Button
                             variant="ghost"
                             size="sm"
+                            className="min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0"
                             onClick={() => handleEdit(patient)}
                             title="Edit"
+                            aria-label="Edit patient"
                           >
                             <Edit className="h-4 w-4" />
                           </Button>
                           <Button
                             variant="ghost"
                             size="sm"
+                            className="min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 text-destructive hover:text-destructive"
                             onClick={() => handleDelete(patient.patientID)}
                             title="Delete"
-                            className="text-destructive hover:text-destructive"
+                            aria-label="Delete patient"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
@@ -242,7 +290,7 @@ export const PatientsTable = forwardRef<PatientsTableRef, PatientsTableProps>(
           </div>
 
           {/* Pagination */}
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="text-sm text-muted-foreground">
               Showing {patients.length} of {total} patient{total !== 1 ? 's' : ''} 
               {search && ` (filtered)`}
@@ -251,11 +299,12 @@ export const PatientsTable = forwardRef<PatientsTableRef, PatientsTableProps>(
               <Button
                 variant="outline"
                 size="sm"
+                className="min-h-[44px] sm:min-h-0"
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1 || loading}
               >
                 <ChevronLeft className="h-4 w-4" />
-                Previous
+                <span className="hidden sm:inline">Previous</span>
               </Button>
               <div className="flex items-center gap-1">
                 {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
@@ -276,7 +325,7 @@ export const PatientsTable = forwardRef<PatientsTableRef, PatientsTableProps>(
                       size="sm"
                       onClick={() => setPage(pageNum)}
                       disabled={loading}
-                      className="min-w-[40px]"
+                      className="min-w-[44px] min-h-[44px] sm:min-h-0"
                     >
                       {pageNum}
                     </Button>
@@ -286,10 +335,11 @@ export const PatientsTable = forwardRef<PatientsTableRef, PatientsTableProps>(
               <Button
                 variant="outline"
                 size="sm"
+                className="min-h-[44px] sm:min-h-0"
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages || loading}
               >
-                Next
+                <span className="hidden sm:inline">Next</span>
                 <ChevronRight className="h-4 w-4" />
               </Button>
             </div>
