@@ -4,6 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  // Note: Paths are relative to frontend/ directory
   theme: {
     extend: {
       keyframes: {

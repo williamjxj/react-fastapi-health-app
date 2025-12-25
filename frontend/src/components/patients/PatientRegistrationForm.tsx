@@ -6,7 +6,7 @@ import { validatePatient } from '@/lib/models/patient'
 import { createPatient } from '@/lib/api/patientService'
 
 interface Props {
-  onCreated?: (patient: PatientInput) => void
+  onCreated?: () => void
 }
 
 const genders: Gender[] = ['Male', 'Female', 'Other']
@@ -47,7 +47,7 @@ export function PatientRegistrationForm({ onCreated }: Props) {
         medicalCondition: '',
         lastVisit: '',
       })
-      onCreated?.(form)
+      onCreated?.()
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Failed to register patient.'
       setMessage(msg)

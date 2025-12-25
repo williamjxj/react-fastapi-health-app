@@ -76,5 +76,19 @@ backend/
 
 ## Deployment
 
-See `docs/003-fastapi-postgresql-deployment.md` for deployment instructions.
+### Render
+
+1. Create new Web Service in Render
+2. Connect repository
+3. Set "Root Directory" to `backend/`
+4. Configure build command: `pip install -r requirements.txt && alembic upgrade head`
+5. Configure start command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+6. Add PostgreSQL database
+7. Set environment variables:
+   - `DATABASE_URL`: PostgreSQL connection string (provided by Render)
+   - `ENVIRONMENT`: `production`
+   - `PORT`: Automatically set by Render
+8. Deploy
+
+See `docs/003-fastapi-postgresql-deployment.md` for additional deployment details.
 

@@ -1,0 +1,130 @@
+# Frontend Service
+
+React + Vite application for patient management system.
+
+## Prerequisites
+
+- Node.js 18+ (LTS version recommended)
+- npm 9+
+
+## Setup
+
+```bash
+npm install
+```
+
+## Development
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+The application will be available at `http://localhost:3000`.
+
+## Build
+
+Create a production build:
+
+```bash
+npm run build
+```
+
+The built files will be in the `dist/` directory.
+
+## Preview Production Build
+
+```bash
+npm run preview
+```
+
+## Testing
+
+```bash
+npm test              # Run tests
+npm run test:ui       # Run tests with UI
+npm run test:coverage # Run tests with coverage
+```
+
+## Code Quality
+
+```bash
+npm run lint          # Run ESLint
+npm run format        # Format code with Prettier
+```
+
+## Configuration
+
+- **Environment Variables**: Create `.env` file with:
+  ```
+  VITE_API_BASE_URL=http://localhost:8000
+  ```
+
+- **API Base URL**: Configured via `VITE_API_BASE_URL` environment variable
+  - Default: `http://localhost:8000` (FastAPI backend)
+  - For json-server: `http://localhost:3001`
+
+## Project Structure
+
+```
+frontend/
+├── src/
+│   ├── components/    # React components
+│   │   ├── patients/  # Patient management components
+│   │   └── ui/        # shadcn/ui components
+│   ├── lib/           # Utilities, API clients, models
+│   ├── App.tsx        # Root component
+│   └── main.tsx       # Application entry point
+├── public/            # Static assets
+├── tests/             # Test suite
+│   ├── unit/          # Unit tests
+│   └── integration/   # Integration tests
+└── dist/              # Production build output
+```
+
+## Technology Stack
+
+- **React 18.x** - UI framework
+- **TypeScript 5.x** - Type safety
+- **Vite 5.x** - Build tool and dev server
+- **Tailwind CSS 3.x** - Utility-first CSS framework
+- **shadcn/ui** - Component library
+- **Vitest** - Testing framework
+
+## Deployment
+
+### Vercel
+
+1. Connect repository to Vercel
+2. Set "Root Directory" to `frontend/` in project settings
+3. Configure environment variables:
+   - `VITE_API_BASE_URL`: Your backend API URL
+4. Deploy
+
+The `vercel.json` at project root is configured for frontend deployment.
+
+## Adding shadcn/ui Components
+
+```bash
+npx shadcn@latest add [component-name]
+```
+
+Components will be added to `src/components/ui/`.
+
+## Troubleshooting
+
+### Port Already in Use
+
+If port 3000 is in use, Vite will automatically use the next available port.
+
+### TypeScript Errors
+
+Run `npm run build` to see all TypeScript errors.
+
+### Tailwind Not Working
+
+- Verify `tailwind.config.js` content paths include your source files
+- Check that `@tailwind` directives are in `src/index.css`
+- Restart the dev server
+

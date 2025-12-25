@@ -33,6 +33,27 @@ class PatientCreate(PatientBase):
     pass
 
 
+class PatientUpdate(BaseModel):
+    """Schema for updating a patient (all fields optional)."""
+
+    patientID: str | None = Field(None, min_length=1, max_length=50, description="Patient ID")
+    name: str | None = Field(None, min_length=1, max_length=255, description="Patient name")
+    age: int | None = Field(None, gt=0, description="Patient age in years")
+    gender: Literal["Male", "Female", "Other"] | None = Field(None, description="Patient gender")
+    medicalCondition: str | None = Field(
+        None, min_length=1, max_length=255, description="Medical condition"
+    )
+    lastVisit: date | None = Field(None, description="Last visit date (YYYY-MM-DD)")
+
+    @field_validator("lastVisit", mode="before")
+    @classmethod
+    def validate_date_format(cls, v):
+        """Parse date string to date object."""
+        if isinstance(v, str):
+            return date.fromisoformat(v)
+        return v
+
+
 class PatientResponse(PatientBase):
     """Schema for patient response (includes auto-generated id)."""
 
@@ -59,4 +80,14 @@ class PatientResponse(PatientBase):
         json_encoders = {
             # Ensure date serialization works correctly
         }
+
+
+class PaginatedResponse(BaseModel):
+    """Schema for paginated response."""
+
+    items: list[PatientResponse]
+    total: int = Field(..., description="Total number of items")
+    page: int = Field(..., ge=1, description="Current page number")
+    page_size: int = Field(..., ge=1, description="Number of items per page")
+    total_pages: int = Field(..., ge=0, description="Total number of pages")
 

@@ -1,0 +1,188 @@
+openapi: 3.0.3
+info:
+  title: Patient Management API
+  description: |
+    API for managing patient records. Compatible between FastAPI backend and json-server mock API.
+    
+    **Note**: This contract is preserved during project restructuring. No API changes are introduced.
+  version: 1.0.0
+  contact:
+    name: API Support
+
+servers:
+  - url: http://localhost:8000
+    description: FastAPI Backend (Production)
+  - url: http://localhost:3001
+    description: Json-server Mock API (Development)
+
+tags:
+  - name: patients
+    description: Patient management operations
+
+paths:
+  /patients:
+    get:
+      summary: Get all patients
+      description: Retrieve a list of all patients
+      tags:
+        - patients
+      operationId: getPatients
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Patient'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      summary: Create a new patient
+      description: Create a new patient record
+      tags:
+        - patients
+      operationId: createPatient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientInput'
+            example:
+              patientID: "P003"
+              name: "Bob Johnson"
+              age: 52
+              gender: "Male"
+              medicalCondition: "Asthma"
+              lastVisit: "2024-03-20"
+      responses:
+        '201':
+          description: Patient created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Patient with same patientID already exists (FastAPI backend only)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Patient:
+      type: object
+      required:
+        - patientID
+        - name
+        - age
+        - gender
+        - medicalCondition
+        - lastVisit
+      properties:
+        id:
+          type: integer
+          description: Auto-generated unique identifier
+          example: 1
+        patientID:
+          type: string
+          description: Unique patient identifier
+          example: "P001"
+        name:
+          type: string
+          description: Patient's full name
+          example: "John Doe"
+        age:
+          type: integer
+          description: Patient's age
+          minimum: 1
+          example: 45
+        gender:
+          type: string
+          enum:
+            - Male
+            - Female
+            - Other
+          description: Patient's gender
+          example: "Male"
+        medicalCondition:
+          type: string
+          description: Patient's medical condition
+          example: "Hypertension"
+        lastVisit:
+          type: string
+          format: date
+          pattern: '^\d{4}-\d{2}-\d{2}$'
+          description: Date of last visit in ISO format (YYYY-MM-DD)
+          example: "2024-01-15"
+
+    PatientInput:
+      type: object
+      required:
+        - patientID
+        - name
+        - age
+        - gender
+        - medicalCondition
+        - lastVisit
+      properties:
+        patientID:
+          type: string
+          description: Unique patient identifier
+          example: "P003"
+        name:
+          type: string
+          description: Patient's full name
+          example: "Bob Johnson"
+        age:
+          type: integer
+          description: Patient's age (must be greater than zero)
+          minimum: 1
+          example: 52
+        gender:
+          type: string
+          enum:
+            - Male
+            - Female
+            - Other
+          description: Patient's gender
+          example: "Male"
+        medicalCondition:
+          type: string
+          description: Patient's medical condition
+          example: "Asthma"
+        lastVisit:
+          type: string
+          format: date
+          pattern: '^\d{4}-\d{2}-\d{2}$'
+          description: Date of last visit in ISO format (YYYY-MM-DD)
+          example: "2024-03-20"
+
+    Error:
+      type: object
+      properties:
+        detail:
+          type: string
+          description: Error message
+          example: "Patient with ID 'P001' already exists"
+

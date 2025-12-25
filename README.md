@@ -1,215 +1,151 @@
-# React App
+# Patient Management System
 
-A modern, production-ready React application initialized with TypeScript, Tailwind CSS, and shadcn/ui component library.
-
-## Prerequisites
-
-- Node.js 18+ (LTS version recommended)
-- npm (comes with Node.js)
-
-Verify installation:
-```bash
-node --version  # Should be 18.x or higher
-npm --version   # Should be 9.x or higher
-```
-
-## Getting Started
-
-### Installation
-
-```bash
-npm install
-```
-
-### Development
-
-Start the development server:
-
-```bash
-npm run dev
-```
-
-The application will be available at `http://localhost:5173` (or the next available port).
-
-### Build
-
-Create a production build:
-
-```bash
-npm run build
-```
-
-The built files will be in the `dist/` directory.
-
-### Preview Production Build
-
-Preview the production build locally:
-
-```bash
-npm run preview
-```
+A modern patient management system with a React frontend, FastAPI backend, and json-server mock API.
 
 ## Project Structure
 
-```
-src/
-├── components/
-│   ├── ui/          # shadcn/ui components
-│   └── examples/    # Example components demonstrating usage
-├── lib/             # Utility functions and helpers
-├── styles/          # Global styles
-├── App.tsx          # Root component
-├── main.tsx         # Application entry point
-└── vite-env.d.ts    # Vite type definitions
+This project is organized into three independent services:
 
-tests/
-├── unit/            # Unit tests (Vitest)
-├── integration/     # Integration tests (React Testing Library)
-└── setup.ts         # Test setup configuration
+- **`frontend/`** - React + Vite application (port 3000, deploy to Vercel)
+- **`backend/`** - FastAPI + PostgreSQL service (port 8000, deploy to Render)
+- **`json-server/`** - Json-server mock API (port 3001, local development)
 
-public/              # Static assets
-```
+Each service is self-contained with its own dependencies, configuration, tests, and documentation.
 
-## Available Scripts
+## Quick Start
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
-- `npm run format` - Format code with Prettier
-- `npm test` - Run tests
-- `npm run test:ui` - Run tests with UI
-- `npm run test:coverage` - Run tests with coverage report
+### Prerequisites
 
-## Technology Stack
+- **Node.js**: 18+ (LTS version recommended)
+- **Python**: 3.12+
+- **PostgreSQL**: 17+ (for backend service)
+- **npm**: 9+
 
-- **React 18.x** - UI framework
-- **TypeScript 5.x** - Type safety
-- **Vite 5.x** - Build tool and dev server
-- **Tailwind CSS 3.x** - Utility-first CSS framework
-- **shadcn/ui** - Component library built on Radix UI and Tailwind
-- **Vitest** - Testing framework
-- **React Testing Library** - Component testing utilities
-- **ESLint** - Code linting
-- **Prettier** - Code formatting
+### Setup All Services
 
-## Adding shadcn/ui Components
+1. **Frontend**:
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+   Available at `http://localhost:3000`
 
-To add new shadcn/ui components:
+2. **Backend**:
+   ```bash
+   cd backend
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -r requirements.txt
+   # Configure .env with database credentials
+   alembic upgrade head
+   uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+   ```
+   Available at `http://localhost:8000`
+   API docs at `http://localhost:8000/docs`
 
-```bash
-npx shadcn@latest add [component-name]
-```
+3. **Json-Server**:
+   ```bash
+   cd json-server
+   npm install
+   npm start
+   ```
+   Available at `http://localhost:3001`
 
-For example:
-```bash
-npx shadcn@latest add button
-npx shadcn@latest add card
-```
+## Service Documentation
 
-Components will be added to `src/components/ui/`.
+Each service has its own detailed README:
 
-### Adding Magic UI Components
+- [`frontend/README.md`](frontend/README.md) - Frontend setup, development, and deployment
+- [`backend/README.md`](backend/README.md) - Backend setup, API documentation, database setup
+- [`json-server/README.md`](json-server/README.md) - Json-server setup and usage
 
-Magic UI components are registered and can be added using:
+## Development
 
-```bash
-npx shadcn@latest add @magic-ui/[component-name]
-```
+### Running All Services
 
-For example:
-```bash
-npx shadcn@latest add @magic-ui/bento-grid
-npx shadcn@latest add @magic-ui/marquee
-npx shadcn@latest add @magic-ui/animated-beam
-```
+You can run all three services simultaneously. Each service runs independently:
 
-### Adding Aceternity UI Components
+- Frontend: `http://localhost:3000`
+- Backend: `http://localhost:8000`
+- Json-server: `http://localhost:3001`
 
-Aceternity UI components are registered and can be added using:
+### Frontend Configuration
 
-```bash
-npx shadcn@latest add @aceternity/[component-name]
-```
+The frontend can connect to either backend service via the `VITE_API_BASE_URL` environment variable:
 
-For example:
-```bash
-npx shadcn@latest add @aceternity/bento-grid
-npx shadcn@latest add @aceternity/macbook-scroll
-npx shadcn@latest add @aceternity/3d-card
-```
+- Backend (FastAPI): `VITE_API_BASE_URL=http://localhost:8000`
+- Json-server: `VITE_API_BASE_URL=http://localhost:3001`
 
-## Example Components
+Configure in `frontend/.env`.
 
-The project includes example components in `src/components/examples/`:
-- `ExampleButton.tsx` - Demonstrates Button component variants and sizes
-- `ExampleCard.tsx` - Demonstrates Card component usage
+## Deployment
 
-These examples show how to use shadcn/ui components in your application.
+### Frontend to Vercel
 
-## Troubleshooting
+1. Connect repository to Vercel
+2. Set "Root Directory" to `frontend/` in project settings
+3. Configure environment variables:
+   - `VITE_API_BASE_URL`: Your backend API URL
+4. Deploy
 
-### Port Already in Use
+### Backend to Render
 
-If port 5173 is in use, Vite will automatically use the next available port.
+1. Create new Web Service in Render
+2. Connect repository
+3. Set "Root Directory" to `backend/`
+4. Configure build command: `pip install -r requirements.txt && alembic upgrade head`
+5. Configure start command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+6. Add PostgreSQL database
+7. Set environment variables (see `backend/.env.example`)
+8. Deploy
 
-### TypeScript Errors
+### Json-Server
 
-Run `npm run build` to see all TypeScript errors. Fix type issues before proceeding.
-
-### Tailwind Not Working
-
-- Verify `tailwind.config.js` content paths include your source files
-- Check that `@tailwind` directives are in `src/index.css`
-- Restart the dev server
-
-### shadcn/ui Components Not Styled
-
-- Verify Tailwind CSS is properly configured
-- Check that `components.json` paths are correct
-- Ensure `tailwindcss-animate` is installed
-
-### ESLint Errors
-
-Run `npm run lint` to see all linting errors. Fix issues before committing.
-
-## Development Workflow
-
-1. Make changes to source files in `src/`
-2. The dev server will automatically reload (HMR)
-3. Run `npm run lint` to check code quality
-4. Run `npm run format` to format code
-5. Run `npm test` to run tests
-6. Commit changes
+Intended for local development only. Not recommended for production deployment.
 
 ## Testing
 
-Tests are written using Vitest and React Testing Library. Follow TDD principles:
-1. Write tests first
-2. Ensure tests fail
-3. Implement functionality
-4. Verify tests pass
+Each service has its own test suite:
 
-Test coverage targets:
-- Unit tests: ≥80% coverage
-- Integration tests: ≥60% coverage
+- **Frontend**: `cd frontend && npm test`
+- **Backend**: `cd backend && pytest`
+- **Json-server**: No tests (mock service)
 
-## Code Quality
+## Project Documentation
 
-- ESLint is configured for TypeScript and React
-- Prettier is configured for consistent formatting
-- All code must pass linting before commit
-- TypeScript strict mode is enabled
+- [`docs/`](docs/) - Project-level documentation
+- [`specs/`](specs/) - Feature specifications and implementation plans
+- [`DEPLOYMENT.md`](DEPLOYMENT.md) - Detailed deployment instructions
+
+## Technology Stack
+
+### Frontend
+- React 18.x
+- TypeScript 5.x
+- Vite 5.x
+- Tailwind CSS 3.x
+- shadcn/ui
+
+### Backend
+- FastAPI 0.104+
+- SQLAlchemy 2.0
+- PostgreSQL 17
+- Alembic (migrations)
+- Pydantic 2.0
+
+### Json-Server
+- json-server 1.0.0-beta.3
+- Node.js 18+
 
 ## Contributing
 
 1. Follow the project structure
-2. Write tests for new features
-3. Ensure all tests pass
-4. Run linting and formatting
-5. Follow TypeScript best practices
+2. Each service is independent - work within service directories
+3. Write tests for new features
+4. Ensure all tests pass before committing
+5. Update service-specific READMEs when adding features
 
 ## License
 
 [Add your license here]
-

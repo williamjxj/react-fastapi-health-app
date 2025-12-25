@@ -1,217 +1,307 @@
-# Deployment Guide: Patient Management System to Vercel
+# Deployment Guide: Patient Management System
 
-This application consists of two services:
-1. **Frontend**: React + Vite application
-2. **Backend API**: json-server mock API
+This application consists of three independent services:
+1. **Frontend**: React + Vite application (deploy to Vercel)
+2. **Backend API**: FastAPI + PostgreSQL service (deploy to Render)
+3. **Json-Server**: Mock API for local development (not deployed)
 
-## Deployment Options
+## Deployment Architecture
 
-### Option 1: Deploy Both Services Separately (Recommended)
-
-#### Step 1: Deploy json-server API
-
-1. Create a new repository for the API service (or use a subdirectory)
-2. Create a Vercel serverless function or use a separate service:
-
-**Option A: Deploy json-server as a separate Vercel project**
-
-Create a new Vercel project with this structure:
 ```
-api/
-  ├── db.json
-  ├── package.json
-  └── vercel.json
+┌─────────────┐         ┌─────────────┐
+│   Vercel    │────────▶│    Render   │
+│  (Frontend) │  HTTP   │  (Backend)  │
+│  Port 3000  │         │  Port 8000  │
+└─────────────┘         └─────────────┘
+                              │
+                              ▼
+                        ┌─────────────┐
+                        │ PostgreSQL  │
+                        │  Database   │
+                        └─────────────┘
 ```
 
-`api/package.json`:
-```json
-{
-  "name": "patient-api",
-  "version": "1.0.0",
-  "scripts": {
-    "start": "json-server --watch db.json --port 3001"
-  },
-  "dependencies": {
-    "json-server": "^1.0.0-beta.3"
-  }
-}
-```
+## Frontend Deployment to Vercel
 
-`api/vercel.json`:
-```json
-{
-  "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/api/serverless.js"
-    }
-  ]
-}
-```
+### Prerequisites
+- Vercel account
+- GitHub repository connected to Vercel
 
-**Option B: Use a free json-server hosting service**
+### Steps
 
-- Use [JSONPlaceholder](https://jsonplaceholder.typicode.com/) for testing
-- Use [my-json-server](https://my-json-server.typicode.com/) (GitHub-based)
-- Use [Railway](https://railway.app/) or [Render](https://render.com/) for free hosting
+1. **Connect Repository**:
+   - Go to [Vercel Dashboard](https://vercel.com/dashboard)
+   - Click "Add New Project"
+   - Import your GitHub repository
 
-#### Step 2: Update Frontend API URL
+2. **Configure Project Settings**:
+   - **Root Directory**: Set to `frontend/`
+   - **Framework Preset**: Vite (auto-detected)
+   - **Build Command**: `npm run build` (default)
+   - **Output Directory**: `dist` (default)
+   - **Install Command**: `npm install` (default)
 
-Update `src/lib/api/patientService.ts`:
-
-```typescript
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3001'
-```
-
-Create `.env.production`:
-```
-VITE_API_BASE_URL=https://your-api-url.vercel.app
-```
-
-#### Step 3: Deploy Frontend to Vercel
-
-1. **Install Vercel CLI** (if not already installed):
-   ```bash
-   npm i -g vercel
-   ```
-
-2. **Login to Vercel**:
-   ```bash
-   vercel login
-   ```
-
-3. **Deploy from project root**:
-   ```bash
-   vercel
-   ```
-
-4. **Set environment variables** in Vercel dashboard:
+3. **Environment Variables**:
    - Go to Project Settings → Environment Variables
-   - Add: `VITE_API_BASE_URL` = `https://your-api-url.vercel.app`
+   - Add: `VITE_API_BASE_URL` = `https://your-backend-url.onrender.com`
+   - Set for: Production, Preview, and Development
 
-5. **Redeploy** after adding environment variables:
-   ```bash
-   vercel --prod
-   ```
+4. **Deploy**:
+   - Vercel will automatically deploy on push to main branch
+   - Or manually trigger deployment from dashboard
 
-### Option 2: Use Vercel Serverless Functions (Advanced)
+### Alternative: Vercel CLI
 
-Create API routes in your Vercel project:
-
-1. Create `api/patients.ts`:
-```typescript
-import type { VercelRequest, VercelResponse } from '@vercel/node'
-import db from '../db.json'
-
-export default function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method === 'GET') {
-    res.status(200).json(db.patients)
-  } else if (req.method === 'POST') {
-    // Handle POST logic
-    res.status(201).json({ ...req.body, id: Date.now() })
-  }
-}
+```bash
+cd frontend
+vercel login
+vercel
+# Follow prompts, set root directory to current directory
+vercel env add VITE_API_BASE_URL production
+# Enter your Render backend URL
+vercel --prod
 ```
 
-2. Update `vercel.json`:
+### Vercel Configuration
+
+The `vercel.json` at project root is configured for frontend deployment:
+
 ```json
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "rewrites": [
-    {
-      "source": "/api/patients",
-      "destination": "/api/patients"
-    }
-  ]
+  "rootDirectory": "frontend",
+  "buildCommand": "cd frontend && npm run build",
+  "outputDirectory": "frontend/dist"
 }
 ```
 
-### Option 3: Use External API Service (Easiest for POC)
+## Backend Deployment to Render
 
-1. **Deploy json-server to Railway** (free tier available):
-   - Go to [Railway](https://railway.app/)
-   - Create new project
-   - Connect GitHub repo
-   - Add `db.json` file
-   - Set start command: `npx json-server db.json --port $PORT`
-   - Railway provides a public URL
+### Prerequisites
+- Render account
+- PostgreSQL database (Render provides managed PostgreSQL)
 
-2. **Update frontend environment variable**:
-   ```
-   VITE_API_BASE_URL=https://your-railway-app.up.railway.app
-   ```
+### Steps
 
-3. **Deploy frontend to Vercel** as normal
+1. **Create PostgreSQL Database**:
+   - Go to Render Dashboard → New → PostgreSQL
+   - Choose a name (e.g., `patient-management-db`)
+   - Select region
+   - Create database
+   - Note the **Internal Database URL** and **External Connection String**
 
-## Recommended Setup for This Project
+2. **Create Web Service**:
+   - Go to Render Dashboard → New → Web Service
+   - Connect your GitHub repository
 
-### Quick Start (Using Railway for API)
+3. **Configure Service**:
+   - **Name**: `patient-management-backend` (or your choice)
+   - **Region**: Choose closest to your users
+   - **Branch**: `main` (or your default branch)
+   - **Root Directory**: `backend/`
+   - **Runtime**: Python 3
+   - **Build Command**: `pip install -r requirements.txt && alembic upgrade head`
+   - **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
 
-1. **Deploy API to Railway**:
-   ```bash
-   # Create a minimal package.json for Railway
-   echo '{"scripts":{"start":"json-server db.json --port $PORT"}}' > api-package.json
-   
-   # Push to Railway or use Railway CLI
-   ```
+4. **Environment Variables**:
+   - Go to Environment tab
+   - Add the following:
+     ```
+     DATABASE_URL=<Internal Database URL from PostgreSQL service>
+     ENVIRONMENT=production
+     PORT=10000
+     ```
+   - **Note**: Use Internal Database URL for better performance (same network)
 
-2. **Deploy Frontend to Vercel**:
-   ```bash
-   # Set environment variable
-   vercel env add VITE_API_BASE_URL production
-   # Enter your Railway API URL when prompted
-   
-   # Deploy
-   vercel --prod
-   ```
+5. **Deploy**:
+   - Render will automatically deploy on push to main branch
+   - First deployment may take 5-10 minutes
 
-### Environment Variables
+### Database Migrations
 
-Create `.env.production`:
+Migrations run automatically during build via `alembic upgrade head` in the build command.
+
+To run migrations manually:
+```bash
+# SSH into Render shell or use Render Shell
+cd backend
+alembic upgrade head
 ```
-VITE_API_BASE_URL=https://your-api-service-url.com
+
+### Health Check
+
+Render will automatically check:
+- Endpoint: `/health`
+- Expected: 200 OK response
+
+Ensure your `backend/app/main.py` has a health check endpoint.
+
+## Json-Server (Local Development Only)
+
+Json-server is **not deployed** and is intended for local development only.
+
+### Local Setup
+
+```bash
+cd json-server
+npm install
+npm start
 ```
 
-Or set in Vercel Dashboard:
-- Project Settings → Environment Variables
-- Add `VITE_API_BASE_URL` for Production, Preview, and Development
+Available at `http://localhost:3001`
+
+### Switching Between Backends
+
+Update `frontend/.env`:
+
+```bash
+# For FastAPI backend (production)
+VITE_API_BASE_URL=http://localhost:8000
+# Or for deployed backend
+VITE_API_BASE_URL=https://your-backend-url.onrender.com
+
+# For json-server (local development)
+VITE_API_BASE_URL=http://localhost:3001
+```
+
+## Environment Variables Summary
+
+### Frontend (Vercel)
+- `VITE_API_BASE_URL`: Backend API URL
+  - Production: `https://your-backend-url.onrender.com`
+  - Development: `http://localhost:8000` or `http://localhost:3001`
+
+### Backend (Render)
+- `DATABASE_URL`: PostgreSQL connection string (provided by Render)
+- `ENVIRONMENT`: `production` or `development`
+- `PORT`: Automatically set by Render (usually 10000)
 
 ## Post-Deployment Checklist
 
-- [ ] Verify API is accessible at the configured URL
+### Frontend
+- [ ] Verify frontend loads at Vercel URL
 - [ ] Test patient registration from deployed frontend
 - [ ] Test patient search functionality
-- [ ] Verify CORS is configured correctly (if needed)
-- [ ] Check browser console for any errors
+- [ ] Verify API calls are going to correct backend URL
+- [ ] Check browser console for errors
 - [ ] Test on mobile devices
+
+### Backend
+- [ ] Verify API is accessible at Render URL
+- [ ] Test `GET /patients` endpoint
+- [ ] Test `POST /patients` endpoint
+- [ ] Verify database connection
+- [ ] Check API documentation at `/docs`
+- [ ] Verify health check endpoint `/health`
+
+### Integration
+- [ ] Frontend can fetch patients from backend
+- [ ] Frontend can create patients via backend
+- [ ] CORS is configured correctly (if needed)
+- [ ] All API endpoints respond correctly
 
 ## Troubleshooting
 
-### CORS Issues
-If you see CORS errors, add CORS headers to your API service or use a CORS proxy.
+### Frontend Issues
 
-### Environment Variables Not Working
+**CORS Errors**:
+- Ensure backend CORS is configured to allow Vercel domain
+- Check `backend/app/main.py` for CORS middleware
+
+**Environment Variables Not Working**:
 - Ensure variables are prefixed with `VITE_` for Vite
 - Redeploy after adding environment variables
 - Check Vercel build logs for variable injection
 
-### API Not Found
-- Verify the API URL is correct
-- Check that the API service is running
-- Ensure routes match between frontend and backend
+**API Not Found**:
+- Verify `VITE_API_BASE_URL` is set correctly
+- Check that backend service is running
+- Verify API routes match between frontend and backend
 
-## Alternative: Single Repository with Monorepo
+### Backend Issues
 
-If you want to keep everything in one repo, consider:
-- Using Vercel's monorepo support
-- Creating separate `vercel.json` files for each service
-- Using Vercel's project linking feature
+**Database Connection Errors**:
+- Verify `DATABASE_URL` is correct
+- Use Internal Database URL for better performance
+- Check database is running and accessible
 
+**Migration Errors**:
+- Check build logs for migration errors
+- Verify `alembic.ini` paths are correct
+- Ensure database user has proper permissions
+
+**Port Issues**:
+- Render sets `$PORT` automatically
+- Use `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+- Don't hardcode port numbers
+
+### General Issues
+
+**Build Failures**:
+- Check build logs in Vercel/Render dashboard
+- Verify all dependencies are in `package.json` or `requirements.txt`
+- Ensure root directory is set correctly
+
+**Service Communication**:
+- Verify network connectivity between services
+- Check firewall rules if applicable
+- Test API endpoints directly with curl/Postman
+
+## Cost Considerations
+
+### Vercel (Frontend)
+- **Free Tier**: Sufficient for most projects
+- Includes: 100GB bandwidth, unlimited deployments
+- **Pro**: $20/month for additional features
+
+### Render (Backend)
+- **Free Tier**: Available but with limitations
+  - Spins down after 15 minutes of inactivity
+  - 750 hours/month free
+- **Starter**: $7/month for always-on service
+- **PostgreSQL**: Free tier available (90 days, then $7/month)
+
+### Recommendations
+- Use free tiers for development/testing
+- Upgrade to paid tiers for production with traffic
+- Consider Render Starter plan for always-on backend
+
+## Alternative Deployment Options
+
+### Frontend Alternatives
+- **Netlify**: Similar to Vercel, free tier available
+- **Cloudflare Pages**: Free, fast CDN
+- **GitHub Pages**: Free but limited (static only)
+
+### Backend Alternatives
+- **Railway**: Similar to Render, free tier available
+- **Fly.io**: Good for global distribution
+- **DigitalOcean App Platform**: Simple PaaS
+- **AWS/GCP/Azure**: More control, more complexity
+
+## Monitoring and Logs
+
+### Vercel
+- View logs in Vercel Dashboard → Deployments → View Function Logs
+- Monitor performance in Analytics tab
+
+### Render
+- View logs in Render Dashboard → Service → Logs
+- Set up alerts for service downtime
+- Monitor database usage in PostgreSQL dashboard
+
+## Security Considerations
+
+1. **Environment Variables**: Never commit `.env` files
+2. **Database**: Use Internal Database URL when possible
+3. **CORS**: Configure CORS to allow only your frontend domain
+4. **API Keys**: Store securely in environment variables
+5. **HTTPS**: Both Vercel and Render provide HTTPS by default
+
+## Next Steps
+
+After successful deployment:
+1. Set up custom domains (optional)
+2. Configure CI/CD for automatic deployments
+3. Set up monitoring and alerts
+4. Configure backup strategy for database
+5. Set up staging environment for testing

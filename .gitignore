@@ -95,12 +95,15 @@ __pycache__/
 *$py.class
 *.so
 .Python
+# Python virtual environments
 backend/venv/
 backend/.venv/
 venv/
 .venv/
 ENV/
 env/
+
+# Python build artifacts
 *.egg-info/
 dist/
 build/
@@ -109,9 +112,22 @@ build/
 htmlcov/
 *.prof
 *.log
+
+# Service-specific .env files
 backend/.env
 backend/.env.local
+frontend/.env
+frontend/.env.local
+json-server/.env
+json-server/.env.local
 
 # Alembic
 alembic/versions/*.pyc
+backend/alembic/versions/*.pyc
+
+# Service-specific build outputs
+frontend/dist/
+frontend/build/
+json-server/dist/
+json-server/build/
 
