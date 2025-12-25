@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { Activity, UserPlus, Search, Users } from 'lucide-react'
 import { gsap } from 'gsap'
+import { Logo } from '@/components/ui/logo'
 import { PatientRegistrationForm } from '@/components/patients/PatientRegistrationForm'
 import { PatientSearchForm } from '@/components/patients/PatientSearchForm'
 import {
@@ -60,11 +61,7 @@ export function PatientManagementPage() {
       <div className="mx-auto max-w-7xl">
         <header className="text-center space-y-4 pb-6 md:pb-8">
           <div className="flex items-center justify-center gap-3">
-            <img
-              src="/logo.svg"
-              alt="Patient Management System Logo"
-              className="h-10 w-10 md:h-12 md:w-12"
-            />
+            <Logo />
             <h1
               ref={headlineRef}
               className="text-3xl md:text-4xl font-bold tracking-tight text-foreground"

@@ -164,6 +164,90 @@
   --shadow-2xl: var(--shadow-2xl);
 }
 
+/* Logo Animations */
+@keyframes logo-pulse {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes logo-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes logo-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes logo-pulse-line {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Logo SVG Styles */
+.logo-svg {
+  animation: logo-float 3s ease-in-out infinite;
+}
+
+.logo-svg .logo-gradient-start {
+  stop-color: var(--primary);
+  stop-opacity: 1;
+}
+
+.logo-svg .logo-gradient-end {
+  stop-color: var(--chart-2);
+  stop-opacity: 1;
+}
+
+.logo-svg .logo-cross-vertical {
+  animation: logo-pulse 2s ease-in-out infinite;
+  transform-origin: 50% 50%;
+}
+
+.logo-svg .logo-cross-horizontal {
+  animation: logo-pulse 2s ease-in-out infinite 0.1s;
+  transform-origin: 50% 50%;
+}
+
+.logo-svg .logo-pulse {
+  animation: logo-pulse-line 2s ease-in-out infinite;
+}
+
+.logo-svg .logo-circle {
+  animation: logo-rotate 20s linear infinite;
+  transform-origin: 50% 50%;
+  opacity: 0.2;
+}
+
+/* Respect reduced motion preference for logo */
+@media (prefers-reduced-motion: reduce) {
+  .logo-svg,
+  .logo-svg .logo-cross-vertical,
+  .logo-svg .logo-cross-horizontal,
+  .logo-svg .logo-pulse,
+  .logo-svg .logo-circle {
+    animation: none;
+  }
+}
 
 /* Animation Utilities - Subtle, 150-300ms */
 @layer utilities {
