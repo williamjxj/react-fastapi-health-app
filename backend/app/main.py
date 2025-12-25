@@ -36,9 +36,13 @@ app.add_middleware(
 app.include_router(patients.router)
 
 
-@app.on_event("startup")
-async def startup_event():
-    """Verify database connection on startup."""
+async def check_database_connection() -> bool:
+    """
+    Check database connectivity.
+
+    Returns:
+        True if database is connected, False otherwise
+    """
     try:
         from app.database import AsyncSessionLocal
         from sqlalchemy import text
@@ -46,10 +50,20 @@ async def startup_event():
             # Test database connection
             result = await session.execute(text("SELECT 1"))
             result.scalar()
-        logger.info("Database connection verified successfully")
+        return True
     except Exception as e:
-        logger.error(f"Failed to connect to database: {e}", exc_info=True)
-        raise
+        logger.warning(f"Database connection check failed: {e}")
+        return False
+
+
+@app.on_event("startup")
+async def startup_event():
+    """Verify database connection on startup."""
+    if await check_database_connection():
+        logger.info("Database connection verified successfully")
+    else:
+        logger.error("Failed to connect to database on startup", exc_info=True)
+        raise RuntimeError("Database connection failed on startup")
 
 
 @app.get("/health")
@@ -60,9 +74,12 @@ async def health_check():
     Returns:
         Health status and database connectivity
     """
+    database_connected = await check_database_connection()
+    database_status = "connected" if database_connected else "disconnected"
+
     return {
-        "status": "healthy",
-        "database": "connected",  # TODO: Add actual database connectivity check
+        "status": "healthy" if database_connected else "degraded",
+        "database": database_status,
         "environment": settings.environment,
     }
 
