@@ -56,13 +56,16 @@ npm run format        # Format code with Prettier
 
 ## Configuration
 
-- **Environment Variables**: Create `.env` file with:
-  ```
-  VITE_API_BASE_URL=http://localhost:8000
-  ```
-
 - **API Base URL**: Configured via `VITE_API_BASE_URL` environment variable
-  - Default: `http://localhost:8000` (FastAPI backend)
+  - **Default (Production)**: `https://react-fastapi-health-app.onrender.com` (Render.com backend)
+  - **Local Development**: Override with environment variable:
+    ```bash
+    VITE_API_BASE_URL=http://localhost:8000 npm run dev
+    ```
+  - **Using .env file**: Create `.env` file in `frontend/` directory:
+    ```
+    VITE_API_BASE_URL=http://localhost:8000
+    ```
   - For json-server: `http://localhost:3001`
 
 ## Project Structure
@@ -94,12 +97,13 @@ frontend/
 
 ## Deployment
 
-### Vercel
+### Vercel / Render / Netlify
 
-1. Connect repository to Vercel
+1. Connect repository to your hosting platform
 2. Set "Root Directory" to `frontend/` in project settings
-3. Configure environment variables:
-   - `VITE_API_BASE_URL`: Your backend API URL
+3. Configure environment variables (optional):
+   - `VITE_API_BASE_URL`: Override API URL if different from default
+   - Default will use: `https://react-fastapi-health-app.onrender.com`
 4. Deploy
 
 The `vercel.json` at project root is configured for frontend deployment.
