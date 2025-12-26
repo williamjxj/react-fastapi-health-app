@@ -1,10 +1,18 @@
 import type { Patient, PatientInput } from '@/lib/models/patient'
 
-// API Base URL - defaults to production Render.com URL
-// Override with VITE_API_BASE_URL environment variable for local development
-// Example: VITE_API_BASE_URL=http://localhost:8000 npm run dev
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL ?? 'https://react-fastapi-health-app.onrender.com'
+// API Base URL - must be set via VITE_API_BASE_URL environment variable
+// For production: VITE_API_BASE_URL=https://react-fastapi-health-app.onrender.com
+// For local development: VITE_API_BASE_URL=http://localhost:8000
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+
+if (!API_BASE_URL) {
+  throw new Error(
+    'VITE_API_BASE_URL environment variable is not set. ' +
+    'Please set it in your .env file or environment variables. ' +
+    'Example: VITE_API_BASE_URL=https://react-fastapi-health-app.onrender.com'
+  )
+}
+
 const PATIENTS_ENDPOINT = `${API_BASE_URL}/patients`
 
 export interface PaginatedPatients {

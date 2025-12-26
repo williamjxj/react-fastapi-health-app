@@ -56,17 +56,22 @@ npm run format        # Format code with Prettier
 
 ## Configuration
 
-- **API Base URL**: Configured via `VITE_API_BASE_URL` environment variable
-  - **Default (Production)**: `https://react-fastapi-health-app.onrender.com` (Render.com backend)
-  - **Local Development**: Override with environment variable:
-    ```bash
-    VITE_API_BASE_URL=http://localhost:8000 npm run dev
+- **API Base URL**: **Required** - Must be set via `VITE_API_BASE_URL` environment variable
+  - **Production**: Create `.env.production` file in `frontend/` directory:
     ```
-  - **Using .env file**: Create `.env` file in `frontend/` directory:
+    VITE_API_BASE_URL=https://react-fastapi-health-app.onrender.com
+    ```
+  - **Local Development**: Create `.env` file in `frontend/` directory:
     ```
     VITE_API_BASE_URL=http://localhost:8000
     ```
+  - **Using command line**:
+    ```bash
+    VITE_API_BASE_URL=http://localhost:8000 npm run dev
+    ```
   - For json-server: `http://localhost:3001`
+
+**Note**: The application will throw an error if `VITE_API_BASE_URL` is not set.
 
 ## Project Structure
 
@@ -101,12 +106,13 @@ frontend/
 
 1. Connect repository to your hosting platform
 2. Set "Root Directory" to `frontend/` in project settings
-3. Configure environment variables (optional):
-   - `VITE_API_BASE_URL`: Override API URL if different from default
-   - Default will use: `https://react-fastapi-health-app.onrender.com`
+3. **Configure required environment variable**:
+   - `VITE_API_BASE_URL`: Your backend API URL (e.g., `https://react-fastapi-health-app.onrender.com`)
 4. Deploy
 
 The `vercel.json` at project root is configured for frontend deployment.
+
+**Important**: Make sure to set `VITE_API_BASE_URL` in your hosting platform's environment variables before deploying.
 
 ## Adding shadcn/ui Components
 
