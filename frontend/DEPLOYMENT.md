@@ -22,11 +22,16 @@ Vercel is optimized for React/Vite applications and offers excellent performance
    - Click "Add New" → "Project"
    - Import your Git repository
    - Configure project settings:
-     - **Framework Preset**: Vite
-     - **Root Directory**: `frontend`
-     - **Build Command**: `npm run build`
-     - **Output Directory**: `dist`
-     - **Install Command**: `npm install`
+     - **Framework Preset**: Vite (or leave as "Other" and Vercel will auto-detect)
+     - **Root Directory**: `frontend` ⚠️ **IMPORTANT**: Set this in Vercel dashboard, NOT in vercel.json
+     - **Build Command**: `npm run build` (Vercel will auto-detect if left empty)
+     - **Output Directory**: `dist` (Vercel will auto-detect if left empty)
+     - **Install Command**: `npm install` (Vercel will auto-detect if left empty)
+   
+   **Critical**: 
+   - Set "Root Directory" to `frontend` in the Vercel dashboard project settings
+   - The `vercel.json` file should NOT contain `rootDirectory`, `buildCommand`, `outputDirectory`, or `installCommand` properties when Root Directory is set in dashboard
+   - The `vercel.json` file only needs the `rewrites` configuration for SPA routing
 
 3. **Configure Environment Variables**
    - Go to Project Settings → Environment Variables
@@ -210,15 +215,10 @@ After deployment, test these endpoints:
 
 ## Recommended: Vercel Configuration
 
-Update `vercel.json` at project root:
+The `vercel.json` at project root should only contain rewrites for SPA routing:
 
 ```json
 {
-  "buildCommand": "cd frontend && npm run build",
-  "outputDirectory": "frontend/dist",
-  "devCommand": "cd frontend && npm run dev",
-  "installCommand": "cd frontend && npm install",
-  "framework": "vite",
   "rewrites": [
     {
       "source": "/(.*)",
@@ -228,7 +228,10 @@ Update `vercel.json` at project root:
 }
 ```
 
-This ensures client-side routing works correctly.
+**Important**: 
+- Do NOT include `rootDirectory`, `buildCommand`, `outputDirectory`, or `installCommand` in vercel.json
+- These should be configured in the Vercel dashboard when you set Root Directory to `frontend`
+- When Root Directory is set in dashboard, Vercel automatically runs commands from that directory
 
 ---
 
