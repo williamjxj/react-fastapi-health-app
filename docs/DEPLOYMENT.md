@@ -1,307 +1,265 @@
-# Deployment Guide: Patient Management System
+# Frontend Deployment Guide
 
-This application consists of three independent services:
-1. **Frontend**: React + Vite application (deploy to Vercel)
-2. **Backend API**: FastAPI + PostgreSQL service (deploy to Render)
-3. **Json-Server**: Mock API for local development (not deployed)
+This guide covers deploying the React + Vite frontend to various cloud platforms.
 
-## Deployment Architecture
+## Prerequisites
 
-```
-┌─────────────┐         ┌─────────────┐
-│   Vercel    │────────▶│    Render   │
-│  (Frontend) │  HTTP   │  (Backend)  │
-│  Port 3000  │         │  Port 8000  │
-└─────────────┘         └─────────────┘
-                              │
-                              ▼
-                        ┌─────────────┐
-                        │ PostgreSQL  │
-                        │  Database   │
-                        └─────────────┘
-```
+- Backend API deployed at: `https://react-fastapi-health-app.onrender.com`
+- Git repository connected to your deployment platform
+- Environment variable `VITE_API_BASE_URL` configured
 
-## Frontend Deployment to Vercel
+## Option 1: Vercel (Recommended) ⭐
 
-### Prerequisites
-- Vercel account
-- GitHub repository connected to Vercel
+Vercel is optimized for React/Vite applications and offers excellent performance and developer experience.
 
-### Steps
+### Steps:
 
-1. **Connect Repository**:
-   - Go to [Vercel Dashboard](https://vercel.com/dashboard)
-   - Click "Add New Project"
-   - Import your GitHub repository
+1. **Sign up/Login to Vercel**
+   - Go to [vercel.com](https://vercel.com)
+   - Sign up with GitHub/GitLab/Bitbucket
 
-2. **Configure Project Settings**:
-   - **Root Directory**: Set to `frontend/`
-   - **Framework Preset**: Vite (auto-detected)
-   - **Build Command**: `npm run build` (default)
-   - **Output Directory**: `dist` (default)
-   - **Install Command**: `npm install` (default)
+2. **Import Project**
+   - Click "Add New" → "Project"
+   - Import your Git repository
+   - Configure project settings:
+     - **Framework Preset**: Vite (or leave as "Other" and Vercel will auto-detect)
+     - **Root Directory**: `frontend` ⚠️ **IMPORTANT**: Set this in Vercel dashboard, NOT in vercel.json
+     - **Build Command**: `npm run build` (Vercel will auto-detect if left empty)
+     - **Output Directory**: `dist` (Vercel will auto-detect if left empty)
+     - **Install Command**: `npm install` (Vercel will auto-detect if left empty)
+   
+   **Critical**: 
+   - Set "Root Directory" to `frontend` in the Vercel dashboard project settings
+   - The `vercel.json` file should NOT contain `rootDirectory`, `buildCommand`, `outputDirectory`, or `installCommand` properties when Root Directory is set in dashboard
+   - The `vercel.json` file only needs the `rewrites` configuration for SPA routing
 
-3. **Environment Variables**:
+3. **Configure Environment Variables**
    - Go to Project Settings → Environment Variables
-   - Add: `VITE_API_BASE_URL` = `https://your-backend-url.onrender.com`
-   - Set for: Production, Preview, and Development
+   - Add:
+     ```
+     VITE_API_BASE_URL=https://react-fastapi-health-app.onrender.com
+     ```
+   - Apply to: Production, Preview, Development
 
-4. **Deploy**:
-   - Vercel will automatically deploy on push to main branch
-   - Or manually trigger deployment from dashboard
+4. **Deploy**
+   - Click "Deploy"
+   - Vercel will automatically build and deploy your app
+   - Your app will be available at: `https://your-project.vercel.app`
 
-### Alternative: Vercel CLI
+### Advantages:
+- ✅ Automatic HTTPS
+- ✅ Global CDN
+- ✅ Automatic deployments on git push
+- ✅ Preview deployments for PRs
+- ✅ Free tier with generous limits
+- ✅ Built-in analytics
 
-```bash
-cd frontend
-vercel login
-vercel
-# Follow prompts, set root directory to current directory
-vercel env add VITE_API_BASE_URL production
-# Enter your Render backend URL
-vercel --prod
-```
+---
 
-### Vercel Configuration
+## Option 2: Render.com
 
-The `vercel.json` at project root is configured for frontend deployment:
+Since you're already using Render for the backend, you can deploy the frontend there too.
 
-```json
-{
-  "rootDirectory": "frontend",
-  "buildCommand": "cd frontend && npm run build",
-  "outputDirectory": "frontend/dist"
-}
-```
+### Steps:
 
-## Backend Deployment to Render
+1. **Create Static Site**
+   - Go to [render.com](https://render.com) dashboard
+   - Click "New" → "Static Site"
 
-### Prerequisites
-- Render account
-- PostgreSQL database (Render provides managed PostgreSQL)
+2. **Connect Repository**
+   - Connect your Git repository
+   - Configure settings:
+     - **Name**: `health-management-frontend` (or your choice)
+     - **Branch**: `main` (or your default branch)
+     - **Root Directory**: `frontend`
+     - **Build Command**: `npm run build`
+     - **Publish Directory**: `dist`
 
-### Steps
-
-1. **Create PostgreSQL Database**:
-   - Go to Render Dashboard → New → PostgreSQL
-   - Choose a name (e.g., `patient-management-db`)
-   - Select region
-   - Create database
-   - Note the **Internal Database URL** and **External Connection String**
-
-2. **Create Web Service**:
-   - Go to Render Dashboard → New → Web Service
-   - Connect your GitHub repository
-
-3. **Configure Service**:
-   - **Name**: `patient-management-backend` (or your choice)
-   - **Region**: Choose closest to your users
-   - **Branch**: `main` (or your default branch)
-   - **Root Directory**: `backend/`
-   - **Runtime**: Python 3
-   - **Build Command**: `pip install -r requirements.txt && alembic upgrade head`
-   - **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-
-4. **Environment Variables**:
+3. **Configure Environment Variables**
    - Go to Environment tab
-   - Add the following:
+   - Add:
      ```
-     DATABASE_URL=<Internal Database URL from PostgreSQL service>
-     ENVIRONMENT=production
-     PORT=10000
+     VITE_API_BASE_URL=https://react-fastapi-health-app.onrender.com
      ```
-   - **Note**: Use Internal Database URL for better performance (same network)
 
-5. **Deploy**:
-   - Render will automatically deploy on push to main branch
-   - First deployment may take 5-10 minutes
+4. **Deploy**
+   - Click "Create Static Site"
+   - Render will build and deploy your app
+   - Your app will be available at: `https://your-project.onrender.com`
 
-### Database Migrations
+### Advantages:
+- ✅ Same platform as backend (easier management)
+- ✅ Free tier available
+- ✅ Automatic deployments
+- ✅ Custom domain support
 
-Migrations run automatically during build via `alembic upgrade head` in the build command.
+---
 
-To run migrations manually:
-```bash
-# SSH into Render shell or use Render Shell
-cd backend
-alembic upgrade head
-```
+## Option 3: Netlify
 
-### Health Check
+Netlify is another excellent option for static site hosting.
 
-Render will automatically check:
-- Endpoint: `/health`
-- Expected: 200 OK response
+### Steps:
 
-Ensure your `backend/app/main.py` has a health check endpoint.
+1. **Sign up/Login to Netlify**
+   - Go to [netlify.com](https://netlify.com)
+   - Sign up with GitHub/GitLab/Bitbucket
 
-## Json-Server (Local Development Only)
+2. **Import Project**
+   - Click "Add new site" → "Import an existing project"
+   - Connect your Git repository
+   - Configure build settings:
+     - **Base directory**: `frontend`
+     - **Build command**: `npm run build`
+     - **Publish directory**: `frontend/dist`
 
-Json-server is **not deployed** and is intended for local development only.
+3. **Configure Environment Variables**
+   - Go to Site Settings → Environment Variables
+   - Add:
+     ```
+     VITE_API_BASE_URL=https://react-fastapi-health-app.onrender.com
+     ```
 
-### Local Setup
+4. **Deploy**
+   - Click "Deploy site"
+   - Netlify will build and deploy
+   - Your app will be available at: `https://your-project.netlify.app`
 
-```bash
-cd json-server
-npm install
-npm start
-```
+### Advantages:
+- ✅ Free tier with good limits
+- ✅ Automatic deployments
+- ✅ Built-in form handling
+- ✅ Edge functions support
 
-Available at `http://localhost:3001`
+---
 
-### Switching Between Backends
+## Option 4: Cloudflare Pages
 
-Update `frontend/.env`:
+Cloudflare Pages offers excellent global performance.
 
-```bash
-# For FastAPI backend (production)
-VITE_API_BASE_URL=http://localhost:8000
-# Or for deployed backend
-VITE_API_BASE_URL=https://your-backend-url.onrender.com
+### Steps:
 
-# For json-server (local development)
-VITE_API_BASE_URL=http://localhost:3001
-```
+1. **Sign up/Login to Cloudflare**
+   - Go to [cloudflare.com](https://cloudflare.com)
+   - Navigate to Pages
 
-## Environment Variables Summary
+2. **Connect Repository**
+   - Click "Create a project"
+   - Connect your Git repository
+   - Configure:
+     - **Project name**: Your choice
+     - **Production branch**: `main`
+     - **Build command**: `cd frontend && npm run build`
+     - **Build output directory**: `frontend/dist`
 
-### Frontend (Vercel)
-- `VITE_API_BASE_URL`: Backend API URL
-  - Production: `https://your-backend-url.onrender.com`
-  - Development: `http://localhost:8000` or `http://localhost:3001`
+3. **Configure Environment Variables**
+   - Go to Settings → Environment Variables
+   - Add:
+     ```
+     VITE_API_BASE_URL=https://react-fastapi-health-app.onrender.com
+     ```
 
-### Backend (Render)
-- `DATABASE_URL`: PostgreSQL connection string (provided by Render)
-- `ENVIRONMENT`: `production` or `development`
-- `PORT`: Automatically set by Render (usually 10000)
+4. **Deploy**
+   - Click "Save and Deploy"
+   - Your app will be available at: `https://your-project.pages.dev`
 
-## Post-Deployment Checklist
+---
 
-### Frontend
-- [ ] Verify frontend loads at Vercel URL
-- [ ] Test patient registration from deployed frontend
-- [ ] Test patient search functionality
-- [ ] Verify API calls are going to correct backend URL
-- [ ] Check browser console for errors
-- [ ] Test on mobile devices
+## Important: CORS Configuration
 
-### Backend
-- [ ] Verify API is accessible at Render URL
-- [ ] Test `GET /patients` endpoint
-- [ ] Test `POST /patients` endpoint
-- [ ] Verify database connection
-- [ ] Check API documentation at `/docs`
-- [ ] Verify health check endpoint `/health`
+After deploying your frontend, **update your backend CORS settings** on Render.com:
 
-### Integration
-- [ ] Frontend can fetch patients from backend
-- [ ] Frontend can create patients via backend
-- [ ] CORS is configured correctly (if needed)
-- [ ] All API endpoints respond correctly
+1. Go to your backend service on Render.com
+2. Navigate to Environment tab
+3. Update `CORS_ORIGINS` to include your frontend URL:
+   ```
+   CORS_ORIGINS=https://your-frontend-domain.vercel.app,https://your-frontend-domain.onrender.com,http://localhost:3000,http://localhost:5173
+   ```
+4. Redeploy the backend service
+
+---
+
+## Testing Your Deployment
+
+After deployment, test these endpoints:
+
+1. **Homepage**: Should load without errors
+2. **API Connection**: Check browser console for API calls
+3. **Patient List**: Should fetch patients from backend
+4. **Patient Registration**: Should create new patients
+5. **Search**: Should filter patients
+
+---
 
 ## Troubleshooting
 
-### Frontend Issues
+### Build Fails
 
-**CORS Errors**:
-- Ensure backend CORS is configured to allow Vercel domain
-- Check `backend/app/main.py` for CORS middleware
+- Check that `VITE_API_BASE_URL` is set in environment variables
+- Verify Node.js version (should be 18+)
+- Check build logs for specific errors
 
-**Environment Variables Not Working**:
-- Ensure variables are prefixed with `VITE_` for Vite
-- Redeploy after adding environment variables
-- Check Vercel build logs for variable injection
+### API Calls Fail (CORS Error)
 
-**API Not Found**:
-- Verify `VITE_API_BASE_URL` is set correctly
-- Check that backend service is running
-- Verify API routes match between frontend and backend
+- Verify `CORS_ORIGINS` includes your frontend domain
+- Check that backend is running and accessible
+- Verify `VITE_API_BASE_URL` is correct
 
-### Backend Issues
+### 404 Errors on Routes
 
-**Database Connection Errors**:
-- Verify `DATABASE_URL` is correct
-- Use Internal Database URL for better performance
-- Check database is running and accessible
+- For Vercel: Add `vercel.json` with rewrites (see below)
+- For Netlify: Add `_redirects` file in `public/` folder
+- For others: Configure SPA routing in platform settings
 
-**Migration Errors**:
-- Check build logs for migration errors
-- Verify `alembic.ini` paths are correct
-- Ensure database user has proper permissions
+---
 
-**Port Issues**:
-- Render sets `$PORT` automatically
-- Use `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-- Don't hardcode port numbers
+## Recommended: Vercel Configuration
 
-### General Issues
+The `vercel.json` at project root should only contain rewrites for SPA routing:
 
-**Build Failures**:
-- Check build logs in Vercel/Render dashboard
-- Verify all dependencies are in `package.json` or `requirements.txt`
-- Ensure root directory is set correctly
+```json
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
+```
 
-**Service Communication**:
-- Verify network connectivity between services
-- Check firewall rules if applicable
-- Test API endpoints directly with curl/Postman
+**Important**: 
+- Do NOT include `rootDirectory`, `buildCommand`, `outputDirectory`, or `installCommand` in vercel.json
+- These should be configured in the Vercel dashboard when you set Root Directory to `frontend`
+- When Root Directory is set in dashboard, Vercel automatically runs commands from that directory
 
-## Cost Considerations
+---
 
-### Vercel (Frontend)
-- **Free Tier**: Sufficient for most projects
-- Includes: 100GB bandwidth, unlimited deployments
-- **Pro**: $20/month for additional features
+## Quick Start (Vercel - Recommended)
 
-### Render (Backend)
-- **Free Tier**: Available but with limitations
-  - Spins down after 15 minutes of inactivity
-  - 750 hours/month free
-- **Starter**: $7/month for always-on service
-- **PostgreSQL**: Free tier available (90 days, then $7/month)
+```bash
+# Install Vercel CLI
+npm i -g vercel
 
-### Recommendations
-- Use free tiers for development/testing
-- Upgrade to paid tiers for production with traffic
-- Consider Render Starter plan for always-on backend
+# Deploy from frontend directory
+cd frontend
+vercel
 
-## Alternative Deployment Options
+# Follow prompts:
+# - Set up and deploy? Yes
+# - Which scope? Your account
+# - Link to existing project? No
+# - Project name? health-management-frontend
+# - Directory? ./
+# - Override settings? No
 
-### Frontend Alternatives
-- **Netlify**: Similar to Vercel, free tier available
-- **Cloudflare Pages**: Free, fast CDN
-- **GitHub Pages**: Free but limited (static only)
+# Set environment variable
+vercel env add VITE_API_BASE_URL production
+# Enter: https://react-fastapi-health-app.onrender.com
 
-### Backend Alternatives
-- **Railway**: Similar to Render, free tier available
-- **Fly.io**: Good for global distribution
-- **DigitalOcean App Platform**: Simple PaaS
-- **AWS/GCP/Azure**: More control, more complexity
+# Deploy to production
+vercel --prod
+```
 
-## Monitoring and Logs
+Your app will be live at the provided URL!
 
-### Vercel
-- View logs in Vercel Dashboard → Deployments → View Function Logs
-- Monitor performance in Analytics tab
-
-### Render
-- View logs in Render Dashboard → Service → Logs
-- Set up alerts for service downtime
-- Monitor database usage in PostgreSQL dashboard
-
-## Security Considerations
-
-1. **Environment Variables**: Never commit `.env` files
-2. **Database**: Use Internal Database URL when possible
-3. **CORS**: Configure CORS to allow only your frontend domain
-4. **API Keys**: Store securely in environment variables
-5. **HTTPS**: Both Vercel and Render provide HTTPS by default
-
-## Next Steps
-
-After successful deployment:
-1. Set up custom domains (optional)
-2. Configure CI/CD for automatic deployments
-3. Set up monitoring and alerts
-4. Configure backup strategy for database
-5. Set up staging environment for testing
