@@ -10,6 +10,7 @@ from alembic import context
 # Import Base and models for autogenerate
 from app.database import Base
 from app.models.patient import Patient  # noqa: F401
+from app.models.migration_checkpoint import MigrationCheckpoint  # noqa: F401
 
 # this is the Alembic Config object
 config = context.config
@@ -21,10 +22,20 @@ if config.config_file_name is not None:
 # Set sqlalchemy.url from environment
 from app.config import settings
 
+# Use migration connection string if available (direct connection, port 5432)
+# Otherwise use application connection string (connection pooler, port 6543)
+# For Supabase: migrations should use direct connection (port 5432) for better performance
+db_url = settings.database_url_migration if settings.database_url_migration else settings.database_url
+
 # Convert async connection string to sync for Alembic
 # Alembic uses synchronous connections for migrations
 # Replace postgresql+psycopg:// with postgresql+psycopg2:// for sync operations
-sync_url = settings.database_url.replace("postgresql+psycopg://", "postgresql+psycopg2://")
+# Ensure SSL is required for Supabase connections
+sync_url = db_url.replace("postgresql+psycopg://", "postgresql+psycopg2://")
+# Ensure SSL mode is set for Supabase (required for HIPAA compliance)
+if "sslmode=" not in sync_url and ("supabase" in sync_url.lower() or "supabase.co" in sync_url):
+    separator = "&" if "?" in sync_url else "?"
+    sync_url = f"{sync_url}{separator}sslmode=require"
 config.set_main_option("sqlalchemy.url", sync_url)
 
 # add your model's MetaData object here for 'autogenerate' support

@@ -16,6 +16,7 @@ import {
   Eye,
   Edit,
   Trash2,
+  RefreshCw,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -34,14 +35,18 @@ type SortOrder = 'asc' | 'desc'
 
 interface PatientsTableProps {
   initialSearch?: string
+  onDataChange?: (total: number, search: string) => void
 }
 
 export interface PatientsTableRef {
   setSearch: (search: string) => void
+  refresh: () => void
+  getTotal: () => number
+  getSearch: () => string
 }
 
 export const PatientsTable = forwardRef<PatientsTableRef, PatientsTableProps>(
-  ({ initialSearch = '' }, ref) => {
+  ({ initialSearch = '', onDataChange }, ref) => {
     const [patients, setPatients] = useState<Patient[]>([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
@@ -54,13 +59,6 @@ export const PatientsTable = forwardRef<PatientsTableRef, PatientsTableProps>(
     const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null)
     const [viewDialogOpen, setViewDialogOpen] = useState(false)
     const [editDialogOpen, setEditDialogOpen] = useState(false)
-
-    useImperativeHandle(ref, () => ({
-      setSearch: (newSearch: string) => {
-        setSearch(newSearch)
-        setPage(1) // Reset to first page when search changes
-      },
-    }))
 
     const pageSize = 20
 
@@ -81,6 +79,8 @@ export const PatientsTable = forwardRef<PatientsTableRef, PatientsTableProps>(
         setPatients(data.items)
         setTotal(data.total)
         setTotalPages(data.total_pages)
+        // Notify parent component of data changes
+        onDataChange?.(data.total, search.trim())
       } catch (err) {
         const msg =
           err instanceof Error ? err.message : 'Failed to load patients.'
@@ -88,7 +88,23 @@ export const PatientsTable = forwardRef<PatientsTableRef, PatientsTableProps>(
       } finally {
         setLoading(false)
       }
-    }, [page, search, sortBy, sortOrder, pageSize])
+    }, [page, search, sortBy, sortOrder, pageSize, onDataChange])
+
+    useImperativeHandle(
+      ref,
+      () => ({
+        setSearch: (newSearch: string) => {
+          setSearch(newSearch)
+          setPage(1) // Reset to first page when search changes
+        },
+        refresh: () => {
+          loadPatients()
+        },
+        getTotal: () => total,
+        getSearch: () => search,
+      }),
+      [loadPatients, total, search]
+    )
 
     useEffect(() => {
       loadPatients()

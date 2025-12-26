@@ -14,6 +14,10 @@ FastAPI backend for patient management system, migrated from json-server to Post
    ```bash
    cp .env.example .env
    # Edit .env with your database credentials
+   
+   # For Supabase migration:
+   # cp .env.supabase .env
+   # Edit .env and replace [user], [password], [host], [database] with your Supabase credentials
    ```
 
 3. **Initialize database**:
@@ -74,21 +78,105 @@ backend/
 - `POST /patients` - Create a new patient
 - `GET /health` - Health check endpoint
 
+## Supabase Migration
+
+### Prerequisites
+
+1. Supabase project created: **drzmgazvrdoytoemjorj**
+2. Dashboard: https://supabase.com/dashboard/project/drzmgazvrdoytoemjorj
+3. Obtain connection credentials from Supabase Dashboard > Settings > Database
+4. Copy `.env.supabase` to `.env` and fill in your credentials
+
+### Quick Connection Setup
+
+1. **Get connection strings from dashboard**:
+   - Go to: https://supabase.com/dashboard/project/drzmgazvrdoytoemjorj/settings/database
+   - Copy "Connection pooling" string (port 6543) for application
+   - Copy "Connection string" (port 5432) for migrations
+
+2. **Update .env file**:
+   ```bash
+   cp .env.supabase .env
+   # Edit .env and replace [PASSWORD] and [region] with actual values
+   ```
+
+3. **Test connection**:
+   ```bash
+   python scripts/test_supabase_connection.py
+   ```
+
+See `docs/supabase-connection-setup.md` for detailed instructions.
+
+### Migration Steps
+
+1. **Update environment variables**:
+   ```bash
+   cp .env.supabase .env
+   # Edit .env with your Supabase credentials
+   ```
+
+2. **Run schema migration**:
+   ```bash
+   alembic upgrade head
+   ```
+
+3. **Run data migration**:
+   ```bash
+   # Set local database URL
+   export DATABASE_URL_LOCAL="postgresql+psycopg://postgres:password@localhost:5432/health_management"
+   
+   # Run migration script
+   python scripts/migrate_to_supabase.py
+   ```
+
+4. **Verify migration**:
+   ```bash
+   python scripts/verify_migration.py
+   ```
+
+### Connection String Format
+
+**For Application (Connection Pooler - port 6543)**:
+```
+postgresql+psycopg://[user]:[password]@[host]:6543/[database]?sslmode=require
+```
+
+**For Migrations (Direct Connection - port 5432)**:
+```
+postgresql+psycopg://[user]:[password]@[host]:5432/[database]?sslmode=require
+```
+
+**Important**: 
+- Always include `?sslmode=require` for SSL/TLS encryption (HIPAA compliance)
+- Use connection pooler (port 6543) for application
+- Use direct connection (port 5432) for migrations
+
+### Switch Database Connection
+
+Use the switch script to view current configuration:
+```bash
+python scripts/switch_database.py --show
+python scripts/switch_database.py --templates
+```
+
 ## Deployment
 
-### Render
+### Render with Supabase
 
 1. Create new Web Service in Render
 2. Connect repository
 3. Set "Root Directory" to `backend/`
 4. Configure build command: `pip install -r requirements.txt && alembic upgrade head`
 5. Configure start command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-6. Add PostgreSQL database
-7. Set environment variables:
-   - `DATABASE_URL`: PostgreSQL connection string (provided by Render)
+6. Set environment variables:
+   - `DATABASE_URL`: Supabase connection string (pooler: port 6543)
+     - Format: `postgresql+psycopg://[user]:[password]@[host]:6543/[database]?sslmode=require`
    - `ENVIRONMENT`: `production`
    - `PORT`: Automatically set by Render
-8. Deploy
+   - `CORS_ORIGINS`: Your frontend domain(s)
+7. Deploy
+
+**Note**: Supabase connection string must include `?sslmode=require` for SSL/TLS encryption.
 
 See `docs/003-fastapi-postgresql-deployment.md` for additional deployment details.
 

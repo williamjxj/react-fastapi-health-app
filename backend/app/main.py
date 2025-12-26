@@ -50,6 +50,14 @@ async def check_database_connection() -> bool:
             # Test database connection
             result = await session.execute(text("SELECT 1"))
             result.scalar()
+            # Check if connected to Supabase
+            try:
+                db_result = await session.execute(text("SELECT current_database()"))
+                db_name = db_result.scalar()
+                if "supabase" in settings.database_url.lower():
+                    logger.info(f"Connected to Supabase database: {db_name}")
+            except Exception:
+                pass  # Ignore if query fails
         return True
     except Exception as e:
         logger.warning(f"Database connection check failed: {e}")
@@ -59,8 +67,14 @@ async def check_database_connection() -> bool:
 @app.on_event("startup")
 async def startup_event():
     """Verify database connection on startup."""
-    if await check_database_connection():
+    connection_ok = await check_database_connection()
+    if connection_ok:
         logger.info("Database connection verified successfully")
+        # Log connection type
+        if "supabase" in settings.database_url.lower():
+            logger.info("Connected to Supabase cloud database")
+        else:
+            logger.info("Connected to local PostgreSQL database")
     else:
         logger.error("Failed to connect to database on startup", exc_info=True)
         raise RuntimeError("Database connection failed on startup")

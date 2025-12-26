@@ -41,7 +41,7 @@ ALTER DATABASE healthy RENAME TO health_management;
 Update your `backend/.env` file:
 
 ```env
-DATABASE_URL=postgresql+psycopg://postgres:William1!@localhost:5432/health_management
+DATABASE_URL=postgresql+psycopg://postgres:password@localhost:5432/health_management
 ```
 
 ### Step 5: Verify Connection
@@ -85,7 +85,7 @@ DROP DATABASE IF EXISTS healthy;
 Update your `backend/.env` file:
 
 ```env
-DATABASE_URL=postgresql+psycopg://postgres:William1!@localhost:5432/health_management
+DATABASE_URL=postgresql+psycopg://postgres:password@localhost:5432/health_management
 ```
 
 ### Step 6: Run Migrations
@@ -117,7 +117,7 @@ If you've already renamed the database or created `health_management`:
 ```bash
 cd backend
 # Edit .env file
-DATABASE_URL=postgresql+psycopg://postgres:William1!@localhost:5432/health_management
+DATABASE_URL=postgresql+psycopg://postgres:password@localhost:5432/health_management
 ```
 
 ### Step 2: Test Connection

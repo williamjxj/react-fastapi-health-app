@@ -69,13 +69,13 @@ Create `backend/.env` file:
 
 ```env
 DB_BACKEND=postgresql
-DATABASE_URL=postgresql+psycopg://postgres:William1!@localhost:5432/health_management
+DATABASE_URL=postgresql+psycopg://postgres:password@localhost:5432/health_management
 ENVIRONMENT=development
 PORT=8000
 CORS_ORIGINS=http://localhost:5173,http://localhost:3000
 ```
 
-**Note**: Update password if different from `William1!`
+**Note**: Update password if different from `password`
 
 ### 5. Initialize Database Schema
 

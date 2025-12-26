@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
-import { Activity, UserPlus, Search, Users } from 'lucide-react'
+import { Activity, UserPlus, Users, RefreshCw } from 'lucide-react'
 import { gsap } from 'gsap'
 import { Logo } from '@/components/ui/logo'
+import { Button } from '@/components/ui/button'
 import { PatientRegistrationForm } from '@/components/patients/PatientRegistrationForm'
 import { PatientSearchForm } from '@/components/patients/PatientSearchForm'
 import {
@@ -11,6 +12,7 @@ import {
 
 export function PatientManagementPage() {
   const [searchQuery, setSearchQuery] = useState('')
+  const [patientCount, setPatientCount] = useState<number | null>(null)
   const tableRef = useRef<PatientsTableRef>(null)
   const headlineRef = useRef<HTMLHeadingElement>(null)
 
@@ -19,9 +21,25 @@ export function PatientManagementPage() {
     tableRef.current?.setSearch(search)
   }
 
+  const handleDataChange = (total: number, search: string) => {
+    // Update count when data changes
+    // If search is empty, reset to null to show "All Patients"
+    if (search.trim() === '' && searchQuery.trim() === '') {
+      setPatientCount(null)
+    } else if (search.trim() !== '' && search === searchQuery.trim()) {
+      // Only update count if the search matches current search query
+      setPatientCount(total)
+    }
+  }
+
   const handlePatientCreated = () => {
-    // Refresh the table after patient creation
-    tableRef.current?.setSearch(searchQuery)
+    // Auto-refresh the table after patient creation
+    tableRef.current?.refresh()
+  }
+
+  const handleRefresh = () => {
+    // Manual refresh button handler
+    tableRef.current?.refresh()
   }
 
   useEffect(() => {
@@ -100,29 +118,50 @@ export function PatientManagementPage() {
             </div>
           </div>
 
-          {/* Right Column: Search and Patient List - 60% */}
+          {/* Right Column: Patient List with Search - 60% */}
           <div className="space-y-4 lg:w-[60%]">
             <div className="border rounded-lg p-4 sm:p-5 md:p-6 bg-card shadow-sm">
-              <h2
-                id="patient-search-heading"
-                className="text-xl md:text-2xl font-semibold mb-4 text-foreground flex items-center gap-2"
-              >
-                <Search className="h-5 w-5 text-primary" aria-hidden="true" />
-                <span className="font-sans">Patient</span>{' '}
-                <span className="font-serif italic">Search</span>
-              </h2>
-              <PatientSearchForm onSearchChange={handleSearchChange} />
-            </div>
-            <div className="border rounded-lg p-4 sm:p-5 md:p-6 bg-card shadow-sm">
-              <h2
-                id="all-patients-heading"
-                className="text-xl md:text-2xl font-semibold mb-4 text-foreground flex items-center gap-2"
-              >
-                <Users className="h-5 w-5 text-primary" aria-hidden="true" />
-                <span className="font-sans">All</span>{' '}
-                <span className="font-serif italic">Patients</span>
-              </h2>
-              <PatientsTable ref={tableRef} initialSearch={searchQuery} />
+              <div className="flex items-center justify-between mb-4">
+                <h2
+                  id="all-patients-heading"
+                  className="text-xl md:text-2xl font-semibold text-foreground flex items-center gap-2"
+                >
+                  <Users className="h-5 w-5 text-primary" aria-hidden="true" />
+                  {searchQuery.trim() && patientCount !== null ? (
+                    <>
+                      <span className="font-sans">{patientCount}</span>{' '}
+                      <span className="font-serif italic">
+                        {patientCount === 1 ? 'Patient' : 'Patients'}
+                        {' '}Found
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="font-sans">All</span>{' '}
+                      <span className="font-serif italic">Patients</span>
+                    </>
+                  )}
+                </h2>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleRefresh}
+                  className="min-h-[44px] sm:min-h-0"
+                  aria-label="Refresh patients list"
+                  title="Refresh patients list"
+                >
+                  <RefreshCw className="h-4 w-4 mr-2 text-primary" aria-hidden="true" />
+                  <span className="hidden sm:inline">Refresh</span>
+                </Button>
+              </div>
+              <div className="mb-4">
+                <PatientSearchForm onSearchChange={handleSearchChange} />
+              </div>
+              <PatientsTable 
+                ref={tableRef} 
+                initialSearch={searchQuery}
+                onDataChange={handleDataChange}
+              />
             </div>
           </div>
         </div>
