@@ -13,7 +13,9 @@ if (!API_BASE_URL) {
   )
 }
 
-const PATIENTS_ENDPOINT = `${API_BASE_URL}/patients`
+// Remove trailing slash if present to avoid double slashes in URLs
+const baseUrl = API_BASE_URL.replace(/\/$/, '')
+const PATIENTS_ENDPOINT = `${baseUrl}/patients`
 
 export interface PaginatedPatients {
   items: Patient[]

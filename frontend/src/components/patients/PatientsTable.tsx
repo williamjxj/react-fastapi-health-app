@@ -16,7 +16,6 @@ import {
   Eye,
   Edit,
   Trash2,
-  RefreshCw,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'

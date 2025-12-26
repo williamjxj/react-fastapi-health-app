@@ -102,17 +102,43 @@ frontend/
 
 ## Deployment
 
-### Vercel / Render / Netlify
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for comprehensive deployment guides.
 
-1. Connect repository to your hosting platform
-2. Set "Root Directory" to `frontend/` in project settings
-3. **Configure required environment variable**:
-   - `VITE_API_BASE_URL`: Your backend API URL (e.g., `https://react-fastapi-health-app.onrender.com`)
-4. Deploy
+### Quick Deploy to Vercel (Recommended)
 
-The `vercel.json` at project root is configured for frontend deployment.
+1. **Install Vercel CLI**:
+   ```bash
+   npm i -g vercel
+   ```
 
-**Important**: Make sure to set `VITE_API_BASE_URL` in your hosting platform's environment variables before deploying.
+2. **Deploy**:
+   ```bash
+   cd frontend
+   vercel
+   ```
+
+3. **Set environment variable**:
+   ```bash
+   vercel env add VITE_API_BASE_URL production
+   # Enter: https://react-fastapi-health-app.onrender.com
+   ```
+
+4. **Deploy to production**:
+   ```bash
+   vercel --prod
+   ```
+
+### Other Platforms
+
+- **Render.com**: See [DEPLOYMENT.md](./DEPLOYMENT.md#option-2-rendercom)
+- **Netlify**: See [DEPLOYMENT.md](./DEPLOYMENT.md#option-3-netlify)
+- **Cloudflare Pages**: See [DEPLOYMENT.md](./DEPLOYMENT.md#option-4-cloudflare-pages)
+
+### Important Notes
+
+- **Environment Variable**: Must set `VITE_API_BASE_URL` in your hosting platform
+- **CORS**: Update backend `CORS_ORIGINS` to include your frontend domain
+- **SPA Routing**: Configure redirects for client-side routing (see DEPLOYMENT.md)
 
 ## Adding shadcn/ui Components
 
