@@ -63,3 +63,5 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000
 
 This is set in `backend/app/config.py` line 29. For production, you must override this via the `CORS_ORIGINS` environment variable on Render.com.
 
+
+
