@@ -1,8 +1,16 @@
-# Health Management System
+# Health Management System (Vercel + Render + Supabase)
 
-A modern patient management system with a React frontend, Python FastAPI backend, and json-server mock API.
+A modern patient management system with a React frontend, Python FastAPI backend, it is a **Vercel (frontend)** + **Render (FastAPI API)** + **Supabase (Postgres)** app.
 
-This is a **Vercel (frontend)** + **Render (FastAPI API)** + **Supabase (Postgres)** app.
+```mermaid
+flowchart LR
+  U[Users / Browsers] -->|HTTPS| V[Vercel<br/>React + Vite Static SPA]
+
+  V -->|REST/JSON over HTTPS| R[Render<br/>FastAPI ASGI web service]
+
+  R -->|Postgres SSL| S[(Supabase<br/>PostgreSQL Database)]
+```
+
 
 ## Project Structure
 
