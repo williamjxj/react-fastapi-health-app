@@ -1,14 +1,16 @@
-# Patient Management System
+# Health Management System
 
-A modern patient management system with a React frontend, FastAPI backend, and json-server mock API.
+A modern patient management system with a React frontend, Python FastAPI backend, and json-server mock API.
+
+This is a **Vercel (frontend)** + **Render (FastAPI API)** + **Supabase (Postgres)** app.
 
 ## Project Structure
 
 This project is organized into three independent services:
 
-- **`frontend/`** - React + Vite application (port 3000, deploy to Vercel)
-- **`backend/`** - FastAPI + PostgreSQL service (port 8000, deploy to Render)
-- **`json-server/`** - Json-server mock API (port 3001, local development)
+- **`frontend/`** - **React** + **Vite** application (port 3000, deploy to Vercel)
+- **`backend/`** - Python **FastAPI** + **PostgreSQL** service (port 8000, deploy to Render)
+- **`json-server/`** - Json-server mock API (port 3001, for local testing and POC)
 
 Each service is self-contained with its own dependencies, configuration, tests, and documentation.
 
@@ -81,6 +83,45 @@ Configure in `frontend/.env`.
 
 ## Deployment
 
+```mermaid
+graph TD
+    %% Define styles for different component types
+    classDef client fill:#E3F2FD,stroke:#1565C0,stroke-width:2px;
+    classDef frontend fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px;
+    classDef backend fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px;
+    classDef db fill:#FFFDE7,stroke:#FBC02D,stroke-width:2px,shape:cylinder;
+
+    %% Define the components
+    subgraph Client_Side ["Client Side"]
+        Browser["🧑‍💻 User Browser<br/>(React App runtime)"]:::client
+    end
+
+    subgraph Vercel_Cloud ["Vercel Cloud"]
+        FrontendHost["⚛️ Frontend Host<br/>(Static Files: HTML/JS/CSS)"]:::frontend
+    end
+
+    subgraph Render_Cloud ["Render Cloud"]
+        BackendAPI["🐍 FastAPI Backend<br/>(Python Docker Container)"]:::backend
+    end
+
+    subgraph Supabase_Cloud ["Supabase Cloud"]
+        Database[("🗄️ Supabase DB<br/>(PostgreSQL)")]:::db
+    end
+
+    %% Define the interactions
+    Browser -- "1. Initial Request (Load App)" --> FrontendHost
+    FrontendHost -- "2. Serve Static Assets" --> Browser
+    Browser -- "3. API Calls (fetch/axios JSON)" --> BackendAPI
+    BackendAPI -- "4. Query Data" --> Database
+    Database -- "5. Return Data" --> BackendAPI
+    BackendAPI -- "6. JSON Response" --> Browser
+
+    %% Add explanatory notes as comments
+    %% Note: Vercel builds the Vite app and serves it via global CDN.
+    %% Note: Render runs the FastAPI app as a web service (usually via Docker).
+    %% Note: Supabase provides managed PostgreSQL, Auth, and real-time capabilities.
+```
+
 ### Frontend to Vercel
 
 1. Connect repository to Vercel
@@ -145,7 +186,3 @@ Each service has its own test suite:
 3. Write tests for new features
 4. Ensure all tests pass before committing
 5. Update service-specific READMEs when adding features
-
-## License
-
-[Add your license here]
